@@ -36,7 +36,7 @@ export default function MiniCardWrapper({ rooms }: Props) {
       >
         สำรวจเพิ่ม...
       </a>
-      <button className="flex w-fit py-[10px] px-[54px] items-center justify-center w-full border-solid border-[2px] rounded-[48px] border-[#E8E8E8] bg-[#2579F5]">
+      <button className="flex w-fit py-[10px] px-[54px] items-center justify-center border-solid border-[2px] rounded-[48px] border-[#E8E8E8] bg-[#2579F5]">
         <img src="/plus-icon.svg" alt="icon-add-room" />
         <span className="wv-ibmplex wv-bold text-[16px] leading-[20px] ml-[8px] text-[#FFFFFF]">
           เพิ่มข้อถกเถียงใหม่

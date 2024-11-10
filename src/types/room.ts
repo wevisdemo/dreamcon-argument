@@ -3,6 +3,7 @@ interface Room {
   title: string;
   comments: Comment[];
   agree_count: number;
+  category: string;
   disagree_count: number;
   partial_agree_count: number;
   created_at: string;

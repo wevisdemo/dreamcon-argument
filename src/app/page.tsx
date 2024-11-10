@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { database, ref, onValue, set, push } from "../lib/firebase";
+import { mockRooms } from "../data/room";
+import MiniCard from "@/components/miniCard";
+import MiniCardWrapper from "@/components/miniCardWrapper";
 export default function Home() {
   const [data, setData] = useState<Room[]>([]);
   useEffect(() => {
@@ -12,14 +15,13 @@ export default function Home() {
     });
   }, []);
 
-  const onclick = async () => {
-    const dataRef = ref(database, "rooms/");
-    await push(dataRef, { data: "test" });
-  };
+  const rooms = mockRooms; // TODO: change this to real data
+
   return (
-    <div className="">
-      <h1 className="wv-h1 ">Hello world</h1>
-      <button onClick={onclick}>click</button>
+    <div className="flex flex-col">
+      <section id="mini-card" className="px-[24px] md:px-[160px]">
+        <MiniCardWrapper rooms={rooms} />
+      </section>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import MiniCard from "./miniCard";
+import { Room } from "@/types/room";
 
 interface Props {
   rooms: Room[];
@@ -31,7 +32,7 @@ export default function MiniCardWrapper({ rooms }: Props) {
         ))}
       </div>
       <a
-        className="wv-ibmplex wv-bold text-[16px] leading-[20px] w-fit text-[#1C4CD3] underline m-auto"
+        className="wv-ibmplex wv-bold text-[#1C4CD3] underline text-[16px] leading-[20px] w-fit m-auto"
         href="/"
       >
         สำรวจเพิ่ม...

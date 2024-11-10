@@ -1,5 +1,7 @@
 "use client";
 
+import { Room } from "@/types/room";
+
 interface Props {
   room: Room;
 }

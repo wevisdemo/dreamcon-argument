@@ -6,6 +6,8 @@ import MiniCard from "@/components/miniCard";
 import MiniCardWrapper from "@/components/miniCardWrapper";
 import Hero from "@/components/hero";
 import Description from "@/components/description";
+import { Room } from "@/types/room";
+
 export default function Home() {
   const [data, setData] = useState<Room[]>([]);
   useEffect(() => {

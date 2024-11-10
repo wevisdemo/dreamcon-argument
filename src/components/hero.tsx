@@ -1,4 +1,8 @@
-export default function Hero() {
+interface Props {
+  navigateLink?: string;
+  textNavigate?: string;
+}
+export default function Hero(props: Props) {
   return (
     <div className="flex flex-col gap-0 md:gap-[16px]">
       <div className="flex justify-between">
@@ -6,7 +10,17 @@ export default function Hero() {
         <img src="/cloud-2.svg" alt="cloud-2" />
         <img src="/cloud-3.svg" alt="cloud-3" className="md:block hidden" />
       </div>
-      <h2 className="wv-ibmplex wv-bold text-[40px]">ข้อถกเถียงต่อยอด</h2>
+      <div className="flex flex-col gap-[14px]">
+        {props.navigateLink && (
+          <a
+            href={props.navigateLink}
+            className="wv-ibmplex wv-bold text-[#1C4CD3] underline "
+          >
+            {props.textNavigate}
+          </a>
+        )}
+        <h2 className="wv-ibmplex wv-bold text-[40px]">ข้อถกเถียงต่อยอด</h2>
+      </div>
       <div className="flex justify-between">
         <img src="/cloud-4.svg" alt="cloud-4" />
         <img src="/cloud-5.svg" alt="cloud-5" />

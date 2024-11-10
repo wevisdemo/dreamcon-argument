@@ -1,3 +1,99 @@
+import { Room, Comment, CommentView } from "@/types/room";
+
+export const mockComments: Comment[] = [
+  {
+    id: "1",
+    comment_view: CommentView.AGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความ สัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ กำหนดว่าระบอบการปกครองเป็นอย่างไร สิทธิและเสรีภาพได้รับการคุ้มครองมากน้อยแค่ไหนเป็นกติกาที่กำหนดโครงสร้างความสัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ กำหนดว่าระบอบการปกครองเป็นอย่างไร สิทธิและเสรีภาพได้รับการคุ้มครองมากน้อยแค่ไหน",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: [],
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+  {
+    id: "2",
+    comment_view: CommentView.AGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความ สัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ กำหนดว่าระบอบการปกครองเป็นอย่างไร สิทธิและเสรีภาพได้รับการคุ้มครองมากน้อยแค่ไหน",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: [],
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+  {
+    id: "3",
+    comment_view: CommentView.PARTIAL_AGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความ สัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ กำหนดว่าระบอบการปกครองเป็นอย่างไร สิทธิและเสรีภาพได้รับการคุ้มครองมากน้อยแค่ไหน",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: [],
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+  {
+    id: "4",
+    comment_view: CommentView.PARTIAL_AGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความ สัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ กำหนดว่าระบอบการปกครองเป็นอย่างไร สิทธิและเสรีภาพได้รับการคุ้มครองมากน้อยแค่ไหนเป็นกติกาที่กำหนดโครงสร้างความสัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ กำหนดว่าระบอบการปกครองเป็นอย่างไร สิทธิและเสรีภาพได้รับการคุ้มครองมากน้อยแค่ไหน",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: [],
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+  {
+    id: "5",
+    comment_view: CommentView.DISAGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความ สัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ กำหนดว่าระบอบการปกครองเป็นอย่างไร สิทธิและเสรีภาพได้รับการคุ้มครองมากน้อยแค่ไหน",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: [],
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+  {
+    id: "6",
+    comment_view: CommentView.DISAGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความ สัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ กำหนดว่าระบอบการปกครองเป็นอย่างไร สิทธิและเสรีภาพได้รับการคุ้มครองมากน้อยแค่ไหน",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: [],
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+  {
+    id: "2",
+    comment_view: CommentView.DISAGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความสัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: [],
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+];
+
 export const mockRooms: Room[] = [
   {
     id: "1",
@@ -56,3 +152,15 @@ export const mockRooms: Room[] = [
     updated_at: "2021-09-01",
   },
 ];
+
+export const mockRoom: Room = {
+  id: "1",
+  title: "ไม่มีรัฐประหาร มีรัฐธรรมนูญที่เป็นกติกาเดียวที่เป็นที่ยอมรับของทุกคน",
+  comments: mockComments,
+  category: "สิทธิพลเมือง",
+  agree_count: 2,
+  partial_agree_count: 3,
+  disagree_count: 3,
+  created_at: "2021-09-01",
+  updated_at: "2021-09-01",
+};

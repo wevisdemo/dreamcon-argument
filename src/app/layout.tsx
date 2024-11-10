@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`wv-ibmplexlooped`}>{children}</body>
+      <body className={`wv-ibmplexlooped text-[13px]`}>{children}</body>
     </html>
   );
 }

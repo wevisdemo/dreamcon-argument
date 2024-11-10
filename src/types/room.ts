@@ -1,4 +1,4 @@
-interface Room {
+export interface Room {
   id: string;
   title: string;
   comments: Comment[];
@@ -10,7 +10,7 @@ interface Room {
   updated_at: string;
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   comment_view: CommentView;
   reason: string;
@@ -23,7 +23,7 @@ interface Comment {
   updated_at: string;
 }
 
-enum CommentView {
+export enum CommentView {
   AGREE = "เห็นด้วย",
   PARTIAL_AGREE = "เห็นด้วยบางส่วน",
   DISAGREE = "ไม่เห็นด้วย",

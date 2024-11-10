@@ -5,7 +5,7 @@ interface Props {
 }
 export default function MiniCardWrapper({ rooms }: Props) {
   return (
-    <div className="flex flex-col space-y-[24px] items-center">
+    <div className="flex flex-col space-y-[24px]">
       <h2 className="wv-ibmplex wv-bold text-[40px]">สำรวจข้อถกเถียง</h2>
       <div className="flex w-full items-end	">
         <input
@@ -25,18 +25,18 @@ export default function MiniCardWrapper({ rooms }: Props) {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px] w-fit m-auto">
         {rooms.map((room) => (
           <MiniCard key={room.id} room={room} />
         ))}
       </div>
       <a
-        className="wv-ibmplex wv-bold text-[16px] leading-[20px] w-fit text-[#1C4CD3] underline"
+        className="wv-ibmplex wv-bold text-[16px] leading-[20px] w-fit text-[#1C4CD3] underline m-auto"
         href="/"
       >
         สำรวจเพิ่ม...
       </a>
-      <button className="flex w-fit py-[10px] px-[54px] items-center justify-center border-solid border-[2px] rounded-[48px] border-[#E8E8E8] bg-[#2579F5]">
+      <button className="flex m-auto w-fit py-[10px] px-[54px] items-center justify-center border-solid border-[2px] rounded-[48px] border-[#E8E8E8] bg-[#2579F5]">
         <img src="/plus-icon.svg" alt="icon-add-room" />
         <span className="wv-ibmplex wv-bold text-[16px] leading-[20px] ml-[8px] text-[#FFFFFF]">
           เพิ่มข้อถกเถียงใหม่

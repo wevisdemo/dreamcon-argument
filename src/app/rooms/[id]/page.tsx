@@ -3,7 +3,7 @@ import Hero from "@/components/hero";
 import TitleCard from "@/components/rooms/titleCard";
 import { mockRoom } from "@/data/room";
 
-export default async function Page({
+export default async function RoomPage({
   params,
 }: {
   params: Promise<{ id: string }>;

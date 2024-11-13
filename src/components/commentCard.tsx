@@ -4,8 +4,9 @@ import { Comment, CommentView } from "@/types/room";
 
 interface Props {
   comment: Comment;
+  fullWidth?: boolean;
 }
-export default function MiniCard({ comment }: Props) {
+export default function MiniCard({ comment, fullWidth }: Props) {
   const getColor = (commentView: CommentView) => {
     switch (commentView) {
       case CommentView.AGREE:
@@ -25,14 +26,17 @@ export default function MiniCard({ comment }: Props) {
     console.log("comment");
   };
   return (
-    <div className="flex w-full">
+    <div className="flex ">
       <div className={`w-[8px] bg-[${getColor(comment.comment_view)}]`} />
-      <div className="rounded-r-[8px] bg-[#FFFFFF] drop-shadow-md w-full max-w-[232px] flex flex-col gap-[8px] p-[16px]">
+      <div
+        className={`rounded-r-[8px] bg-[#FFFFFF] drop-shadow-md w-full ${
+          fullWidth ? "max-w-full" : "max-w-[232px]"
+        } flex flex-col gap-[8px] p-[16px]`}
+      >
         <div className="flex items-center">
           <h5
-            className={`wv-ibmplex wv-bold text-[16px] text-[${getColor(
-              comment.comment_view
-            )}]`}
+            className={`wv-ibmplex wv-bold text-[16px] `}
+            style={{ color: getColor(comment.comment_view) }}
           >
             {comment.comment_view}
           </h5>

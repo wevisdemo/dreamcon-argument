@@ -164,3 +164,46 @@ export const mockRoom: Room = {
   created_at: "2021-09-01",
   updated_at: "2021-09-01",
 };
+
+export const mockComment: Comment = {
+  id: "01",
+  comment_view: CommentView.DISAGREE,
+  reason:
+    "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความสัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ",
+  agree_count: 2,
+  partial_agree_count: 2,
+  disagree_count: 3,
+  like_count: 4,
+  comments: mockComments,
+  created_at: "2021-09-01",
+  updated_at: "2021-09-01",
+};
+
+export const mockPreviousComments: Comment[] = [
+  {
+    id: "01",
+    comment_view: CommentView.DISAGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความสัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: mockComments,
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+  {
+    id: "01",
+    comment_view: CommentView.AGREE,
+    reason:
+      "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความสัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ",
+    agree_count: 2,
+    partial_agree_count: 2,
+    disagree_count: 3,
+    like_count: 4,
+    comments: mockComments,
+    created_at: "2021-09-01",
+    updated_at: "2021-09-01",
+  },
+];

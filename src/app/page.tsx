@@ -7,6 +7,7 @@ import MiniCardWrapper from "@/components/miniCardWrapper";
 import Hero from "@/components/hero";
 import Description from "@/components/description";
 import { Room } from "@/types/room";
+import AddRoomModal from "@/components/addRoomModal";
 
 export default function Home() {
   const [data, setData] = useState<Room[]>([]);
@@ -20,6 +21,8 @@ export default function Home() {
   }, []);
 
   const rooms = mockRooms; // TODO: change this to real data
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="flex flex-col">
@@ -40,11 +43,18 @@ export default function Home() {
         id="mini-card"
         className="px-[24px] md:px-[160px]  py-[32px] md:py-[64px]"
       >
-        <MiniCardWrapper rooms={rooms} />
+        <MiniCardWrapper
+          rooms={rooms}
+          onclickAddRoom={() => setIsModalOpen(true)}
+        />
       </section>
       <div className="bg-[#FFFFFF] h-[40px] flex relative">
         <div className="bg-[url('/ellipse-2.svg')] bg-repeat w-full h-[16px] absolute top-[-2px]" />
       </div>
+      <AddRoomModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      ></AddRoomModal>
     </div>
   );
 }

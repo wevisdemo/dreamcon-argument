@@ -80,7 +80,7 @@ export const mockComments: Comment[] = [
     updated_at: "2021-09-01",
   },
   {
-    id: "2",
+    id: "7",
     comment_view: CommentView.DISAGREE,
     reason:
       "รัฐธรรมนูญเป็นกติกาพื้นฐานไม่ว่ารัฐใดก็ตาม เป็นกติกาที่กำหนดโครงสร้างความสัมพันธ์ระหว่าง สถาบันการเมืองต่างๆ",

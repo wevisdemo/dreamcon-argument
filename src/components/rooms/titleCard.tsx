@@ -4,8 +4,9 @@ import { Room } from "@/types/room";
 
 interface Props {
   room: Room;
+  onClickAddComment: () => void;
 }
-export default function MiniCard({ room }: Props) {
+export default function MiniCard({ room, onClickAddComment }: Props) {
   return (
     <div className="w-full flex flex-col space-y-[16px] p-[16px] md:p-[24px] bg-[#FFFFFF] drop-shadow-md rounded-[8px]">
       {/* <div className="">{room.category}</div> */}
@@ -31,7 +32,10 @@ export default function MiniCard({ room }: Props) {
             <span className="text-[10px] ml-[4px]">ไม่เห็นด้วย</span>
           </div>
         </div>
-        <button className="flex py-[10px] px-[24px] items-center justify-center w-fit border-solid border-[2px] rounded-[48px] border-[#E8E8E8]">
+        <button
+          onClick={onClickAddComment}
+          className="flex py-[10px] px-[24px] items-center justify-center w-fit border-solid border-[2px] rounded-[48px] border-[#E8E8E8]"
+        >
           <img src="/comment-icon.svg" alt="icon-add-comment" />
           <span className="wv-ibmplex wv-bold text-[16px] leading-[20px] ml-[8px]">
             เพิ่มความคิดเห็น

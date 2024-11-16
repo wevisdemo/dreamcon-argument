@@ -6,7 +6,7 @@ import MiniCard from "@/components/miniCard";
 import MiniCardWrapper from "@/components/miniCardWrapper";
 import Hero from "@/components/hero";
 import Description from "@/components/description";
-import { Room } from "@/types/room";
+import { AddRoomPayload, Room } from "@/types/room";
 import AddRoomModal from "@/components/addRoomModal";
 
 export default function Home() {
@@ -23,6 +23,18 @@ export default function Home() {
   const rooms = mockRooms; // TODO: change this to real data
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const addRoom = (payload: AddRoomPayload) => {
+    const timeNow = new Date().toISOString();
+    const dbPayload = {
+      title: payload.title,
+      comments: [],
+      created_at: timeNow,
+      updated_at: timeNow,
+    };
+
+    const newRoomRef = push(ref(database, "rooms/"), dbPayload);
+  };
 
   return (
     <div className="flex flex-col">
@@ -54,6 +66,7 @@ export default function Home() {
       <AddRoomModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onAddRoom={addRoom}
       ></AddRoomModal>
     </div>
   );

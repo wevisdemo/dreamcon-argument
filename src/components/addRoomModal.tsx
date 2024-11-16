@@ -1,11 +1,14 @@
+import { AddRoomPayload } from "@/types/room";
+import { on } from "events";
 import React, { ReactNode } from "react";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAddRoom: (payload: AddRoomPayload) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddRoom }) => {
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -20,6 +23,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       : "rounded-[48px] py-[10px] px-[16px] bg-[#E8E8E8] text-16 text-[#979797] wv-ibmplex wv-bold leading-[19px]";
 
   const [text, setText] = React.useState("");
+
+  const onSubmit = () => {
+    onAddRoom({ title: text });
+    close();
+  };
 
   return (
     <div
@@ -36,7 +44,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           </button>
           <button
             className={getConfirmStyle()}
-            onClick={onClose}
+            onClick={onSubmit}
             disabled={text === ""}
           >
             โพสต์

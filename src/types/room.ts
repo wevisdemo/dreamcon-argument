@@ -10,6 +10,10 @@ export interface Room {
   updated_at: string;
 }
 
+export interface AddRoomPayload {
+  title: string;
+}
+
 export interface Comment {
   id: string;
   comment_view: CommentView;

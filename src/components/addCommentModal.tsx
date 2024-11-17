@@ -1,12 +1,13 @@
-import { CommentView } from "@/types/room";
+import { AddCommentPayload, CommentView } from "@/types/room";
 import React, { ReactNode } from "react";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  submitComment: (payload: AddCommentPayload) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, submitComment }) => {
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -40,12 +41,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const onSubmit = () => {
+    if (commentView && text) {
+      submitComment({
+        comment_view: commentView,
+        reason: text,
+      });
+    }
+    onClose();
+  };
+
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       onClick={handleBackdropClick}
     >
-      <div className="w-full h-full md:h-[480px] md:max-w-[480px] bg-white md:rounded-lg shadow-lg ">
+      <div className="flex flex-col w-full h-full md:h-[480px] md:max-w-[480px] bg-white md:rounded-lg shadow-lg ">
         <div className="flex justify-between px-[16px] py-[12px] border-solid border-b-[1px] border-[#D4D4D4]">
           <button
             className="py-[10px] px-[16px] text-16 wv-ibmplex wv-bold "
@@ -55,7 +66,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           </button>
           <button
             className={getConfirmStyle()}
-            onClick={onClose}
+            onClick={onSubmit}
             disabled={text === ""}
           >
             โพสต์

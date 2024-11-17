@@ -1,6 +1,6 @@
 // lib/firebase.js
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { getDatabase, ref, onValue, set, push, get } from "firebase/database";
 
 // Firebase configuration - replace these values with your own
 const firebaseConfig = JSON.parse(
@@ -11,4 +11,4 @@ const firebaseConfig = JSON.parse(
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-export { database, ref, onValue, set, push };
+export { database, ref, onValue, set, push, get };

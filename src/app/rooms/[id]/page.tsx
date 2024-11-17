@@ -16,6 +16,7 @@ export default function RoomPage({
   const { id } = useParams();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const onSubmitComment = () => {};
 
   return (
     <div className="flex flex-col">
@@ -41,6 +42,7 @@ export default function RoomPage({
       <AddCommentModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        submitComment={onSubmitComment}
       ></AddCommentModal>
     </div>
   );

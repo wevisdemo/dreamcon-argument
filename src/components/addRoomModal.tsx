@@ -26,7 +26,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddRoom }) => {
 
   const onSubmit = () => {
     onAddRoom({ title: text });
-    close();
+    onClose();
   };
 
   return (

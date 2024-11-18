@@ -45,6 +45,8 @@ export default function Home() {
       comment_view: ConvertCommentView(data.comment_view),
       reason: data.reason,
       like_count: data.like_count,
+      parent_comment_ids: data.parent_comment_ids || [],
+      parent_room_id: data.parent_room_id,
       comments: [], // no need to use
       created_at: data.created_at,
       updated_at: data.updated_at,

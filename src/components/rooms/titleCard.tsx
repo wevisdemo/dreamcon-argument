@@ -8,13 +8,13 @@ interface Props {
 }
 export default function MiniCard({ room, onClickAddComment }: Props) {
   const getCommentCountByView = (view: CommentView) => {
-    return room.comments.filter((c) => c.comment_view === view).length;
+    return (room.comments || []).filter((c) => c.comment_view === view).length;
   };
   return (
     <div className="w-full flex flex-col space-y-[16px] p-[16px] md:p-[24px] bg-[#FFFFFF] drop-shadow-md rounded-[8px]">
       {/* <div className="">{room.category}</div> */}
       <h5 className="wv-ibmplex wv-bold text-[24px]">{room.title}</h5>
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row justify-center items-center md:justify-between space-y-[16px] md:space-y-0 ">
         <div className="flex items-center justify-between">
           <div className="flex ">
             <div className="flex w-[16px] h-[16px] bg-[#6AB193] rounded-[8px] text-[13px] items-center justify-center text-[#ffffff] leading-0">

@@ -1,14 +1,16 @@
+"use client";
+
 import CommentCard from "@/components/commentCard";
 import Hero from "@/components/hero";
 import TitleCard from "@/components/rooms/titleCard";
 import { mockComment, mockPreviousComments, mockRoom } from "@/data/room";
 import { CommentView } from "@/types/room";
+import { useParams } from "next/navigation";
 
-export default async function CommentPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default function CommentPage() {
+  const { id } = useParams();
+  const commentId = id as string;
+
   const room = mockRoom; // TODO: change this to real data
   const previouseComments = mockPreviousComments;
   const comment = mockComment;
@@ -35,22 +37,49 @@ export default async function CommentPage({
           {room.title}
         </h4>
         {previouseComments.map((comment) => (
-          <CommentCard comment={comment} fullWidth />
+          <div
+            className="mt-[40px] w-full"
+            key={`parent-comment-${comment.id}`}
+          >
+            <CommentCard
+              comment={comment}
+              fullWidth
+              onClickLike={() => {}}
+              onClickAddComment={() => {}}
+            />
+          </div>
         ))}
-        <div className="grid grid-cols-3">
-          <div className="flex flex-col gap-[16px] items-center">
-            {getCommentsByView(CommentView.AGREE).map((comment) => (
-              <CommentCard comment={comment} />
+        <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px]">
+          <div className=" w-full flex flex-col gap-[16px] items-center">
+            {getCommentsByView(CommentView.AGREE).map((comment, index) => (
+              <CommentCard
+                onClickLike={() => {}}
+                key={`agree-comment-${index}`}
+                comment={comment}
+                onClickAddComment={() => {}}
+              />
             ))}
           </div>
-          <div className="flex flex-col gap-[16px] items-center">
-            {getCommentsByView(CommentView.PARTIAL_AGREE).map((comment) => (
-              <CommentCard comment={comment} />
-            ))}
+          <div className="w-full flex flex-col gap-[16px] items-center">
+            {getCommentsByView(CommentView.PARTIAL_AGREE).map(
+              (comment, index) => (
+                <CommentCard
+                  onClickLike={() => {}}
+                  key={`partial-agree-comment-${index}`}
+                  comment={comment}
+                  onClickAddComment={() => {}}
+                />
+              )
+            )}
           </div>
-          <div className="flex flex-col gap-[16px] items-center">
-            {getCommentsByView(CommentView.DISAGREE).map((comment) => (
-              <CommentCard comment={comment} />
+          <div className="w-full flex flex-col gap-[16px] items-center">
+            {getCommentsByView(CommentView.DISAGREE).map((comment, index) => (
+              <CommentCard
+                onClickLike={() => {}}
+                key={`disagree-comment-${index}`}
+                comment={comment}
+                onClickAddComment={() => {}}
+              />
             ))}
           </div>
         </div>

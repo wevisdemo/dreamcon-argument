@@ -20,6 +20,8 @@ export interface Comment {
   comment_view: CommentView;
   reason: string;
   like_count: number;
+  parent_room_id: string;
+  parent_comment_ids: string[];
   comments: Comment[];
   created_at: string;
   updated_at: string;

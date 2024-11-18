@@ -8,7 +8,7 @@ interface Props {
 }
 export default function MiniCard({ room, onClickAddComment }: Props) {
   const getCommentCountByView = (view: CommentView) => {
-    return room.comments.filter((c) => c.comment_view === view).length;
+    return (room.comments || []).filter((c) => c.comment_view === view).length;
   };
 
   const handleAddComment = () => {

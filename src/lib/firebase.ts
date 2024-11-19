@@ -14,7 +14,7 @@ import {
 
 // Firebase configuration - replace these values with your own
 const firebaseConfig = JSON.parse(
-  process.env.REACT_APP_FIREBASE_CONFIG || "{}"
+  import.meta.env.VITE_FIREBASE_CONFIG || "{}"
 );
 
 // Initialize Firebase

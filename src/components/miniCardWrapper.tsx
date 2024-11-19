@@ -1,5 +1,7 @@
 import MiniCard from "./miniCard";
 import { Room } from "../types/room";
+import { useState } from "react";
+import { RoomSortOption } from "../types/app";
 
 interface Props {
   rooms: Room[];
@@ -15,30 +17,70 @@ export default function MiniCardWrapper({
   onClickEditRoom,
   onClickDeleteRoom,
 }: Props) {
+  const [filter, setFilter] = useState<RoomSortOption>(RoomSortOption.LATEST);
+  const [search, setSearch] = useState<string>("");
+
+  const displayRooms = () => {
+    let filteredRooms = rooms;
+    if (search) {
+      filteredRooms = rooms.filter((room) =>
+        room.title.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    return filteredRooms.sort((a, b) => {
+      if (filter === RoomSortOption.LATEST) {
+        return (
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+        );
+      } else {
+        return b.child_node_ids.length - a.child_node_ids.length;
+      }
+    });
+  };
+
   return (
     <div className="flex flex-col space-y-[24px]">
       <h2 className="wv-ibmplex wv-bold text-[40px]">สำรวจข้อถกเถียง</h2>
       <div className="flex w-full items-end	">
         <input
+          value={search}
           style={{ backgroundImage: "url('/search-icon.svg')" }}
           className="w-full h-[40px] p-[16px] text-[13px] border-[1px] border-solid border-[#D4D4D4] rounded-[48px] bg-no-repeat bg-[center_right_1rem]"
           type="text"
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="ค้นหาคำที่เกี่ยวข้อง"
         />
         <div className="w-full flex flex-col ml-[16px] text-[13px] max-w-[310px]">
           <span className="wv-bold">เรียงตามการมีส่วนร่วม</span>
           <div className="flex w-full h-[40px] mt-[4px]">
-            <button className="w-full rounded-l-[48px] border-[1px] border-solid border-[#1C4CD3] text-[#1C4CD3]">
+            <button
+              style={{
+                backgroundColor:
+                  filter === RoomSortOption.LATEST ? "#1C4CD3" : "#FFFFFF",
+                color: filter === RoomSortOption.LATEST ? "#FFFFFF" : "#1C4CD3",
+              }}
+              className="w-full rounded-l-[48px] border-[1px] border-solid border-[#1C4CD3] "
+              onClick={() => setFilter(RoomSortOption.LATEST)}
+            >
               ล่าสุด
             </button>
-            <button className="w-full rounded-r-[48px] border-[1px] border-solid border-[#1C4CD3] text-[#1C4CD3]">
+            <button
+              style={{
+                backgroundColor:
+                  filter === RoomSortOption.POPULAR ? "#1C4CD3" : "#FFFFFF",
+                color:
+                  filter === RoomSortOption.POPULAR ? "#FFFFFF" : "#1C4CD3",
+              }}
+              className="w-full rounded-r-[48px] border-[1px] border-solid border-[#1C4CD3] "
+              onClick={() => setFilter(RoomSortOption.POPULAR)}
+            >
               มากที่สุด
             </button>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px] w-fit m-auto">
-        {rooms.map((room) => (
+        {displayRooms().map((room) => (
           <MiniCard
             key={room.id}
             room={room}

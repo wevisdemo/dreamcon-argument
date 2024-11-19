@@ -1,4 +1,4 @@
-export enum SortBy {
+export enum RoomSortOption {
   LATEST = "latest",
   POPULAR = "popular",
 }

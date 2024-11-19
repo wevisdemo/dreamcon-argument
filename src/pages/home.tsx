@@ -17,76 +17,19 @@ import {
   HandleDeleteRoom,
   HandleEditRoom,
 } from "../util/room";
+import { ConvertRoom } from "../util/converter";
+import { RoomSortOption } from "../types/app";
 
 export default function Home() {
   const [rooms, setRooms] = useState<Room[]>([]);
-
-  const getComment = async (id: string): Promise<Comment | null> => {
-    const commentRef = ref(database, "comments/" + id);
-    try {
-      const snapshot = await get(commentRef);
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-
-        return convertComment(id, data);
-      } else {
-        console.log("No data available");
-        return null;
-      }
-    } catch (e) {
-      console.error("Error fetching data:", e);
-    }
-    return null;
-  };
-
-  const convertComment = (id: string, data: any): Comment => {
-    return {
-      id: id,
-      comment_view: ConvertCommentView(data.comment_view),
-      reason: data.reason,
-      like_count: data.like_count,
-      parent_comment_ids: data.parent_comment_ids || [],
-      parent_room_id: data.parent_room_id,
-      comments: [], // no need to use
-      child_node_ids: data.child_node_ids || [],
-      created_at: data.created_at,
-      updated_at: data.updated_at,
-    };
-  };
-
-  const ConvertCommentView = (text: string): CommentView => {
-    switch (text) {
-      case "เห็นด้วย":
-        return CommentView.AGREE;
-      case "เห็นด้วยบางส่วน":
-        return CommentView.PARTIAL_AGREE;
-      case "ไม่เห็นด้วย":
-        return CommentView.DISAGREE;
-      default:
-        return CommentView.AGREE;
-    }
-  };
+  const [filter, setFilter] = useState<RoomSortOption>(RoomSortOption.LATEST);
 
   const convertRooms = async (data: any): Promise<Room[]> => {
     const rooms: Room[] = [];
 
     for (const key in data) {
-      const room = data[key];
-      const comments = await Promise.all(
-        (room.comment_ids || []).map(async (commentId: string) => {
-          const com = await getComment(commentId);
-          return com;
-        })
-      );
-
-      rooms.push({
-        id: key,
-        title: room.title,
-        comments: comments || [],
-        child_node_ids: room.child_node_ids || [],
-        created_at: room.created_at,
-        updated_at: room.updated_at,
-      });
+      const room = await ConvertRoom(key, data[key]);
+      rooms.push(room);
     }
 
     return rooms;

@@ -162,7 +162,7 @@ export default function RoomPage(): ReactElement<any> {
     const dbPayload = {
       comment_view: payload.comment_view,
       reason: payload.reason,
-      parent_comment_id: [commentId],
+      parent_comment_ids: [commentId],
       parent_room_id: roomId,
       like_count: 0,
       created_at: timeNow,

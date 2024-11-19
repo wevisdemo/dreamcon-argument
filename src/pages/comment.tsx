@@ -1,14 +1,12 @@
-"use client";
-
-import CommentCard from "@/components/commentCard";
-import Hero from "@/components/hero";
-import TitleCard from "@/components/rooms/titleCard";
-import { mockComment, mockPreviousComments, mockRoom } from "@/data/room";
-import { CommentView } from "@/types/room";
-import { useParams } from "next/navigation";
+import CommentCard from "../components/commentCard";
+import Hero from "../components/hero";
+import TitleCard from "../components/rooms/titleCard";
+import { mockComment, mockPreviousComments, mockRoom } from "../data/room";
+import { CommentView } from "../types/room";
+import { useParams } from "react-router-dom";
 
 export default function CommentPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const commentId = id as string;
 
   const room = mockRoom; // TODO: change this to real data

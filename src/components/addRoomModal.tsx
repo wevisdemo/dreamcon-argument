@@ -1,4 +1,4 @@
-import { AddRoomPayload } from "@/types/room";
+import { AddRoomPayload } from "../types/room";
 import { on } from "events";
 import React, { ReactNode } from "react";
 
@@ -9,6 +9,8 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddRoom }) => {
+  const [text, setText] = React.useState("");
+
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -21,8 +23,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddRoom }) => {
     text
       ? "rounded-[48px] py-[10px] px-[16px] bg-[#2579F5] text-16 text-white wv-ibmplex wv-bold leading-[19px] shadow-md"
       : "rounded-[48px] py-[10px] px-[16px] bg-[#E8E8E8] text-16 text-[#979797] wv-ibmplex wv-bold leading-[19px]";
-
-  const [text, setText] = React.useState("");
 
   const onSubmit = () => {
     onAddRoom({ title: text });

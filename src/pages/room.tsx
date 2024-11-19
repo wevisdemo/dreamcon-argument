@@ -1,10 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
-import AddCommentModal from "@/components/addCommentModal";
-import CommentCard from "@/components/commentCard";
-import Hero from "@/components/hero";
-import TitleCard from "@/components/rooms/titleCard";
-import { useParams } from "next/navigation";
+import { ReactElement, useEffect, useState } from "react";
+import AddCommentModal from "../components/addCommentModal";
+import CommentCard from "../components/commentCard";
+import Hero from "../components/hero";
+import TitleCard from "../components/rooms/titleCard";
 import {
   database,
   ref,
@@ -14,12 +12,14 @@ import {
   get,
   increment,
   update,
-} from "../../../lib/firebase";
-import { CommentView, Room, Comment, AddCommentPayload } from "@/types/room";
+} from "../lib/firebase";
+import { CommentView, Room, Comment, AddCommentPayload } from "../types/room";
+import { useParams } from "react-router-dom";
 
-export default function RoomPage() {
+export default function RoomPage(): ReactElement<any> {
   // const room = mockRoom; // TODO: change this to real data
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+
   const roomId = id as string;
 
   const [room, setRoom] = useState<Room | null>(null);
@@ -246,87 +246,85 @@ export default function RoomPage() {
     return (room?.comments || []).filter((c) => c.comment_view === view);
   };
 
-  return (
-    room !== null && (
-      <div className="flex flex-col">
-        {room != null && <div></div>}
-        <section id="hero" className="px-[24px] md:px-[160px] bg-[#BDE6FF]">
-          <Hero navigateLink="/" textNavigate="< ข้อถกเถียงทั้งหมด" />
-        </section>
-        <section
-          id="info"
-          className="px-[24px] md:px-[160px] py-[24px] md:py-[48px]"
-        >
-          <TitleCard
-            room={room}
-            onClickAddComment={() => {
-              setAddCommentModalOpen(true);
-            }}
-          />
-          {room.comments && (
-            <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px]">
-              <div className=" w-full flex flex-col gap-[16px] items-center">
-                {getCommentsByView(CommentView.AGREE).map((comment, index) => (
+  return room !== null ? (
+    <div className="flex flex-col">
+      {room != null && <div></div>}
+      <section id="hero" className="px-[24px] md:px-[160px] bg-[#BDE6FF]">
+        <Hero navigateLink="/" textNavigate="< ข้อถกเถียงทั้งหมด" />
+      </section>
+      <section
+        id="info"
+        className="px-[24px] md:px-[160px] py-[24px] md:py-[48px]"
+      >
+        <TitleCard
+          room={room}
+          onClickAddComment={() => {
+            setAddCommentModalOpen(true);
+          }}
+        />
+        {room.comments && (
+          <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px]">
+            <div className=" w-full flex flex-col gap-[16px] items-center">
+              {getCommentsByView(CommentView.AGREE).map((comment, index) => (
+                <CommentCard
+                  onClickLike={() => handleLikeComment(comment.id)}
+                  key={`agree-comment-${index}`}
+                  comment={comment}
+                  onClickAddComment={() => {
+                    setTargetCommentId(comment.id);
+                    setAddCommentInCommentModalOpen(true);
+                  }}
+                />
+              ))}
+            </div>
+            <div className="w-full flex flex-col gap-[16px] items-center">
+              {getCommentsByView(CommentView.PARTIAL_AGREE).map(
+                (comment, index) => (
                   <CommentCard
                     onClickLike={() => handleLikeComment(comment.id)}
-                    key={`agree-comment-${index}`}
+                    key={`partial-agree-comment-${index}`}
                     comment={comment}
                     onClickAddComment={() => {
                       setTargetCommentId(comment.id);
                       setAddCommentInCommentModalOpen(true);
                     }}
                   />
-                ))}
-              </div>
-              <div className="w-full flex flex-col gap-[16px] items-center">
-                {getCommentsByView(CommentView.PARTIAL_AGREE).map(
-                  (comment, index) => (
-                    <CommentCard
-                      onClickLike={() => handleLikeComment(comment.id)}
-                      key={`partial-agree-comment-${index}`}
-                      comment={comment}
-                      onClickAddComment={() => {
-                        setTargetCommentId(comment.id);
-                        setAddCommentInCommentModalOpen(true);
-                      }}
-                    />
-                  )
-                )}
-              </div>
-              <div className="w-full flex flex-col gap-[16px] items-center">
-                {getCommentsByView(CommentView.DISAGREE).map(
-                  (comment, index) => (
-                    <CommentCard
-                      onClickLike={() => handleLikeComment(comment.id)}
-                      key={`disagree-comment-${index}`}
-                      comment={comment}
-                      onClickAddComment={() => {
-                        setTargetCommentId(comment.id);
-                        setAddCommentInCommentModalOpen(true);
-                      }}
-                    />
-                  )
-                )}
-              </div>
+                )
+              )}
             </div>
-          )}
-        </section>
-        <AddCommentModal
-          isOpen={addCommentModalOpen}
-          onClose={() => setAddCommentModalOpen(false)}
-          submitComment={(payload) => onSubmitComment(room.id, payload)}
-        ></AddCommentModal>
-        <AddCommentModal
-          isOpen={addCommentInCommentModalOpen}
-          onClose={() => {
-            setAddCommentInCommentModalOpen(false);
-            setTargetCommentId("");
-          }}
-          submitComment={(payload) =>
-            handleAddCommentInComment(targetCommentId, payload)
-          }
-        ></AddCommentModal>
-      </div>
-    )
+            <div className="w-full flex flex-col gap-[16px] items-center">
+              {getCommentsByView(CommentView.DISAGREE).map((comment, index) => (
+                <CommentCard
+                  onClickLike={() => handleLikeComment(comment.id)}
+                  key={`disagree-comment-${index}`}
+                  comment={comment}
+                  onClickAddComment={() => {
+                    setTargetCommentId(comment.id);
+                    setAddCommentInCommentModalOpen(true);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+      <AddCommentModal
+        isOpen={addCommentModalOpen}
+        onClose={() => setAddCommentModalOpen(false)}
+        submitComment={(payload) => onSubmitComment(room.id, payload)}
+      ></AddCommentModal>
+      <AddCommentModal
+        isOpen={addCommentInCommentModalOpen}
+        onClose={() => {
+          setAddCommentInCommentModalOpen(false);
+          setTargetCommentId("");
+        }}
+        submitComment={(payload) =>
+          handleAddCommentInComment(targetCommentId, payload)
+        }
+      ></AddCommentModal>
+    </div>
+  ) : (
+    <div></div>
   );
 }

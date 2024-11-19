@@ -1,4 +1,4 @@
-import { Room, Comment, CommentView } from "@/types/room";
+import { Room, Comment, CommentView } from "../types/room";
 
 export const mockComments: Comment[] = [
   {

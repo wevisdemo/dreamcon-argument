@@ -1,5 +1,5 @@
 import MiniCard from "./miniCard";
-import { Room } from "@/types/room";
+import { Room } from "../types/room";
 
 interface Props {
   rooms: Room[];
@@ -16,7 +16,8 @@ export default function MiniCardWrapper({
       <h2 className="wv-ibmplex wv-bold text-[40px]">สำรวจข้อถกเถียง</h2>
       <div className="flex w-full items-end	">
         <input
-          className="w-full h-[40px] p-[16px] text-[13px] border-[1px] border-solid border-[#D4D4D4] rounded-[48px] bg-[url('/search-icon.svg')] bg-no-repeat bg-[center_right_1rem]"
+          style={{ backgroundImage: "url('/search-icon.svg')" }}
+          className="w-full h-[40px] p-[16px] text-[13px] border-[1px] border-solid border-[#D4D4D4] rounded-[48px] bg-no-repeat bg-[center_right_1rem]"
           type="text"
           placeholder="ค้นหาคำที่เกี่ยวข้อง"
         />

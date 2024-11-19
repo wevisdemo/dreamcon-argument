@@ -1,6 +1,4 @@
-"use client";
-
-import { Comment, CommentView } from "@/types/room";
+import { Comment, CommentView } from "../types/room";
 import {
   database,
   ref,
@@ -8,7 +6,7 @@ import {
   increment,
   update,
   get,
-} from "@/lib/firebase";
+} from "../lib/firebase";
 import { useEffect, useState } from "react";
 
 interface Props {

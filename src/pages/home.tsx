@@ -1,21 +1,20 @@
-"use client";
 import { useEffect, useState } from "react";
 import { database, ref, onValue, set, push, get } from "../lib/firebase";
 import { mockRooms } from "../data/room";
-import MiniCard from "@/components/miniCard";
-import MiniCardWrapper from "@/components/miniCardWrapper";
-import Hero from "@/components/hero";
-import Description from "@/components/description";
+import MiniCard from "../components/miniCard";
+import MiniCardWrapper from "../components/miniCardWrapper";
+import Hero from "../components/hero";
+import Description from "../components/description";
 import {
   AddRoomPayload,
   Room,
   Comment,
   CommentView,
   AddCommentPayload,
-} from "@/types/room";
-import AddRoomModal from "@/components/addRoomModal";
-import { CommentDB } from "@/types/database";
-import AddCommentModal from "@/components/addCommentModal";
+} from "../types/room";
+import AddRoomModal from "../components/addRoomModal";
+import { CommentDB } from "../types/database";
+import AddCommentModal from "../components/addCommentModal";
 
 export default function Home() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -164,7 +163,10 @@ export default function Home() {
         <Hero />
       </section>
       <div className="bg-[#BDE6FF] h-[40px] flex items-end">
-        <div className="bg-[url('/ellipse.svg')] bg-repeat w-full h-[16px]" />
+        <div
+          style={{ backgroundImage: "url('/ellipse.svg')" }}
+          className="bg-repeat w-full h-[16px]"
+        />
       </div>
 
       <section
@@ -184,7 +186,10 @@ export default function Home() {
         />
       </section>
       <div className="bg-[#FFFFFF] h-[40px] flex relative">
-        <div className="bg-[url('/ellipse-2.svg')] bg-repeat w-full h-[16px] absolute top-[-2px]" />
+        <div
+          style={{ backgroundImage: "url('/ellipse-2.svg')" }}
+          className="bg-repeat w-full h-[16px] absolute top-[-2px]"
+        />
       </div>
       <AddRoomModal
         isOpen={isAddRoomModalOpen}

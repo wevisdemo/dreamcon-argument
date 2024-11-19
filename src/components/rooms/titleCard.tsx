@@ -1,6 +1,4 @@
-"use client";
-
-import { CommentView, Room } from "@/types/room";
+import { CommentView, Room } from "../../types/room";
 
 interface Props {
   room: Room;

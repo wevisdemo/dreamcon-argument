@@ -1,4 +1,4 @@
-import { AddCommentPayload, CommentView } from "@/types/room";
+import { AddCommentPayload, CommentView } from "../types/room";
 import React, { ReactNode } from "react";
 
 interface ModalProps {
@@ -8,6 +8,10 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, submitComment }) => {
+  const [text, setText] = React.useState<string>("");
+  const [commentView, setCommentView] = React.useState<CommentView | null>(
+    null
+  );
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -21,10 +25,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, submitComment }) => {
       ? "rounded-[48px] py-[10px] px-[16px] bg-[#2579F5] text-16 text-white wv-ibmplex wv-bold leading-[19px] shadow-md"
       : "rounded-[48px] py-[10px] px-[16px] bg-[#E8E8E8] text-16 text-[#979797] wv-ibmplex wv-bold leading-[19px]";
 
-  const [text, setText] = React.useState<string>("");
-  const [commentView, setCommentView] = React.useState<CommentView | null>(
-    null
-  );
   const isPostDisabled = () => text === "" || commentView === null;
 
   const getCommentViewStyle =

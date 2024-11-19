@@ -41,12 +41,10 @@ export default function RoomPage(): ReactElement<any> {
     const dataRef = ref(database, "rooms/" + id);
     onValue(dataRef, async (snapshot: any) => {
       const dbValue = snapshot.val();
-      console.log(dbValue);
       if (!dbValue) {
         return;
       }
       const convertedRoom = await convertRoom(dbValue);
-      console.log("convertedRoom", convertedRoom);
       setRoom(convertedRoom);
     });
   }, []);
@@ -56,7 +54,6 @@ export default function RoomPage(): ReactElement<any> {
       (data.comment_ids || [])
         .map(async (commentId: string) => {
           const com = await getComment(commentId);
-          console.log("com => ", com);
           return com;
         })
         .filter((c: any) => c !== null)
@@ -77,7 +74,6 @@ export default function RoomPage(): ReactElement<any> {
       const snapshot = await get(commentRef);
       if (snapshot.exists()) {
         const data = snapshot.val();
-        console.log(data);
         return convertCommentLv1(id, data);
       } else {
         console.log("No data available");
@@ -94,7 +90,6 @@ export default function RoomPage(): ReactElement<any> {
       const snapshot = await get(commentRef);
       if (snapshot.exists()) {
         const data = snapshot.val();
-        console.log(data);
         return convertCommentLv2(id, data);
       } else {
         console.log("No data available");
@@ -183,7 +178,6 @@ export default function RoomPage(): ReactElement<any> {
     commentId: string,
     payload: AddCommentPayload
   ) => {
-    console.log("add comment in comment", commentId, payload);
     const timeNow = new Date().toISOString();
     const dbPayload = {
       comment_view: payload.comment_view,
@@ -253,7 +247,6 @@ export default function RoomPage(): ReactElement<any> {
   };
 
   const getCommentsByView = (view: CommentView) => {
-    console.log("fetch room", room);
     return (room?.comments || []).filter((c) => c.comment_view === view);
   };
 
@@ -274,7 +267,6 @@ export default function RoomPage(): ReactElement<any> {
     commentId: string,
     payload: AddCommentPayload
   ) => {
-    console.log("edit comment", commentId, payload);
     await HandleEditComment(commentId, payload);
     setIsEditCommentModalOpen(false);
     setTargetCommentId("");

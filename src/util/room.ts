@@ -57,3 +57,23 @@ export const HandleEditRoom = async (
   };
   await update(ref(database), updates);
 };
+
+export const HandleAddChildToRoom = async (
+  roomId: string,
+  commentId: string
+) => {
+  const roomRef = ref(database, "rooms/" + roomId);
+  const timeNow = new Date().toISOString();
+  await get(roomRef).then(async (snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      let child_node_ids = data.child_node_ids || [];
+      child_node_ids = [...child_node_ids, commentId];
+      const updates = {
+        ["rooms/" + roomId + "/child_node_ids"]: child_node_ids,
+        ["rooms/" + roomId + "/updated_at"]: timeNow,
+      };
+      await update(ref(database), updates);
+    }
+  });
+};

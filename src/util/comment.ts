@@ -1,6 +1,7 @@
-import { get, ref, update } from "firebase/database";
+import { child, get, push, ref, set, update } from "firebase/database";
 import { AddCommentPayload, Comment } from "../types/room";
 import { database } from "../lib/firebase";
+import { HandleAddChildToRoom } from "./room";
 
 export const HandleDeleteComment = async (comment: Comment) => {
   const commentIds = [comment.id, ...comment.child_node_ids];
@@ -92,4 +93,78 @@ export const HandleEditComment = async (
     ["comments/" + commentId + "/updated_at"]: timeNow,
   };
   await update(ref(database), updates);
+};
+
+export const HandleAddCommentToComment = async (
+  parentComment: Comment,
+  payload: AddCommentPayload
+) => {
+  const timeNow = new Date().toISOString();
+  const dbPayload = {
+    comment_view: payload.comment_view,
+    reason: payload.reason,
+    parent_comment_ids: [
+      ...(parentComment?.parent_comment_ids || []),
+      parentComment.id,
+    ],
+    child_node_ids: [],
+    parent_room_id: parentComment.parent_room_id,
+    like_count: 0,
+    created_at: timeNow,
+    updated_at: timeNow,
+  };
+  const newCommentRef = push(ref(database, "comments/"), dbPayload);
+  const newCommentId = newCommentRef.key;
+  if (!newCommentId) {
+    console.error("Error creating new comment");
+    return;
+  }
+  await addCommentToParentComment(parentComment.id, newCommentId);
+  await addChildNodeToComments(parentComment.child_node_ids, newCommentId);
+  await HandleAddChildToRoom(parentComment.parent_room_id, newCommentId);
+};
+
+const addCommentToParentComment = async (
+  parentCommentId: string,
+  newCommentId: string
+) => {
+  const commentRef = ref(database, "comments/" + parentCommentId);
+  const timeNow = new Date().toISOString();
+  await get(commentRef).then(async (snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      let commentIds = data.comment_ids || [];
+      commentIds = [...commentIds, newCommentId];
+      let child_node_ids = data.child_node_ids || [];
+      child_node_ids = [...child_node_ids, newCommentId];
+      const updates = {
+        ["comments/" + parentCommentId + "/comment_ids"]: commentIds,
+        ["comments/" + parentCommentId + "/child_node_ids"]: child_node_ids,
+        ["comments/" + parentCommentId + "/updated_at"]: timeNow,
+      };
+      await update(ref(database), updates);
+    }
+  });
+};
+
+export const addChildNodeToComments = async (
+  parentCommentIds: string[],
+  newCommentId: string
+) => {
+  for (const parentId of parentCommentIds) {
+    const commentRef = ref(database, "comments/" + parentId);
+    const timeNow = new Date().toISOString();
+    await get(commentRef).then(async (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        let child_node_ids = data.child_node_ids || [];
+        child_node_ids = [...child_node_ids, newCommentId];
+        const updates = {
+          ["comments/" + parentId + "/child_node_ids"]: child_node_ids,
+          ["comments/" + parentId + "/updated_at"]: timeNow,
+        };
+        await update(ref(database), updates);
+      }
+    });
+  }
 };

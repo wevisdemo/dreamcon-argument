@@ -28,7 +28,6 @@ export default function Home() {
       if (snapshot.exists()) {
         const data = snapshot.val();
 
-        console.log(data);
         return convertComment(id, data);
       } else {
         console.log("No data available");
@@ -76,12 +75,10 @@ export default function Home() {
       const comments = await Promise.all(
         (room.comment_ids || []).map(async (commentId: string) => {
           const com = await getComment(commentId);
-          console.log("com => ", com);
           return com;
         })
       );
 
-      console.log("comments => ", await comments);
       rooms.push({
         id: key,
         title: room.title,
@@ -100,12 +97,10 @@ export default function Home() {
     onValue(dataRef, async (snapshot) => {
       const dbValue = snapshot.val();
 
-      console.log(dbValue);
       if (!dbValue) {
         return;
       }
       const convertedRooms = await convertRooms(dbValue);
-      console.log("convertedRooms", convertedRooms);
       setRooms(convertedRooms);
     });
   }, []);

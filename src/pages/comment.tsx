@@ -14,7 +14,10 @@ import {
 } from "../lib/firebase";
 import { ConvertRoom, GetCommentWitChildren } from "../util/converter";
 import AddCommentModal from "../components/addCommentModal";
-import { HandleDeleteComment } from "../util/comment";
+import {
+  HandleAddCommentToComment,
+  HandleDeleteComment,
+} from "../util/comment";
 
 interface MapComment {
   [id: string]: Comment;
@@ -59,7 +62,15 @@ export default function CommentPage() {
         if (convertedComment == null) {
           return;
         }
-        console.log("setComment => ", convertedComment);
+        const commentsInComment = await Promise.all(
+          (convertedComment.comments || []).map(async (comment) => {
+            return await GetCommentWitChildren(comment.id);
+          })
+        );
+        const filteredCommentsInComment = commentsInComment.filter(
+          (c) => c != null
+        );
+        convertedComment.comments = filteredCommentsInComment as Comment[];
         setComment(convertedComment);
       }
     });
@@ -74,17 +85,24 @@ export default function CommentPage() {
         if (convertedComment == null) {
           return;
         }
-        console.log("setComment => ", convertedComment);
+        const commentsInComment = await Promise.all(
+          (convertedComment.comments || []).map(async (comment) => {
+            return await GetCommentWitChildren(comment.id);
+          })
+        );
+        const filteredCommentsInComment = commentsInComment.filter(
+          (c) => c != null
+        );
+        convertedComment.comments = filteredCommentsInComment as Comment[];
+
+        console.log("convertedComment => ", convertedComment);
         setComment(convertedComment);
       }
     });
-    console.log("done comment => ", comment);
   };
 
   const fetchAndWatchRoom = async () => {
     if (!comment) {
-      console.log("No comment 1");
-
       return;
     }
     const roomRef = ref(database, "rooms/" + comment.parent_room_id);
@@ -103,12 +121,9 @@ export default function CommentPage() {
 
   const fetchAndWatchParentComments = async () => {
     if (!comment) {
-      console.log("No comment 2");
-
       return;
     }
     for (const id of comment.parent_comment_ids) {
-      console.log("parent comment id => ", id);
       const commentRef = ref(database, "comments/" + id);
       onValue(commentRef, async (snapshot: any) => {
         const comment = snapshot.val();
@@ -158,7 +173,7 @@ export default function CommentPage() {
     if (!comment) {
       return;
     }
-    await handleAddComment(comment, payload);
+    await HandleAddCommentToComment(comment, payload);
   };
 
   const handleAddCommentToParentComment = async (
@@ -167,105 +182,28 @@ export default function CommentPage() {
   ) => {
     const targetComment = mapParentComment[targetCommentId];
     if (targetComment) {
-      await handleAddComment(targetComment, payload);
+      await HandleAddCommentToComment(targetComment, payload);
     }
   };
 
-  const handleAddComment = async (
-    targetParentComment: Comment,
-    payload: AddCommentPayload
-  ) => {
-    const timeNow = new Date().toISOString();
-    const dbPayload = {
-      comment_view: payload.comment_view,
-      reason: payload.reason,
-      parent_comment_ids: [
-        ...(targetParentComment?.parent_comment_ids || []),
-        targetParentComment.id,
-      ],
-      parent_room_id: targetParentComment.parent_room_id,
-      like_count: 0,
-      created_at: timeNow,
-      updated_at: timeNow,
-    };
-
-    const newCommentRef = push(ref(database, "comments/"), dbPayload);
-    const newCommentId = newCommentRef.key;
-    const commentRef = ref(database, "comments/" + targetParentComment.id);
-    try {
-      await get(commentRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          const commentIds = data.comment_ids || [];
-          commentIds.push(newCommentId);
-          set(
-            ref(
-              database,
-              "comments/" + targetParentComment.id + "/comment_ids"
-            ),
-            commentIds
-          );
-          set(
-            ref(database, "comments/" + targetParentComment.id + "/updated_at"),
-            timeNow
-          );
-        }
-      });
-    } catch (e) {
-      console.error("Error fetching data:", e);
+  const getChildCommentById = (id: string): Comment | undefined => {
+    if (!comment) {
+      return undefined;
     }
 
-    const roomRef = ref(database, "rooms/" + room?.id);
-    await get(roomRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        set(ref(database, "rooms/" + room?.id + "/updated_at"), timeNow);
-      }
-    });
+    return comment?.comments.find((c) => c.id === id);
   };
 
   const handleCommentInChildComment = async (
     targetCommentId: string,
     payload: AddCommentPayload
   ) => {
-    const timeNow = new Date().toISOString();
-    const dbPayload = {
-      comment_view: payload.comment_view,
-      reason: payload.reason,
-      parent_comment_ids: [...(comment?.parent_comment_ids || []), commentId],
-      parent_room_id: comment?.parent_room_id,
-      like_count: 0,
-      created_at: timeNow,
-      updated_at: timeNow,
-    };
-
-    const newCommentRef = push(ref(database, "comments/"), dbPayload);
-    const newCommentId = newCommentRef.key;
-    const commentRef = ref(database, "comments/" + targetCommentId);
-    try {
-      await get(commentRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          const commentIds = data.comment_ids || [];
-          commentIds.push(newCommentId);
-          set(
-            ref(database, "comments/" + commentId + "/comment_ids"),
-            commentIds
-          );
-          set(ref(database, "comments/" + commentId + "/updated_at"), timeNow);
-        }
-      });
-    } catch (e) {
-      console.error("Error fetching data:", e);
+    const targetComment = getChildCommentById(targetCommentId);
+    if (targetComment) {
+      // await handleAddComment(targetComment, payload);
+      await HandleAddCommentToComment(targetComment, payload);
+      fetchComment();
     }
-
-    const roomRef = ref(database, "rooms/" + room?.id);
-    await get(roomRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        set(ref(database, "rooms/" + room?.id + "/updated_at"), timeNow);
-      }
-    });
-
-    fetchComment();
   };
 
   const handleDeleteComment = async (comment: Comment) => {
@@ -306,7 +244,10 @@ export default function CommentPage() {
                     setAddCommentInParentModalOpen(true);
                   }}
                   onClickEdit={() => {}}
-                  onClickDelete={() => handleDeleteComment(parentComment)}
+                  onClickDelete={() => {
+                    handleDeleteComment(parentComment);
+                    window.location.href = "/";
+                  }}
                 />
               </div>
             ))}
@@ -337,7 +278,7 @@ export default function CommentPage() {
                       key={`agree-comment-${index}`}
                       comment={targetComment}
                       onClickAddComment={() => {
-                        setTargetAddCommentId(comment.id);
+                        setTargetAddCommentId(targetComment.id);
                         setAddCommentInCommentModalOpen(true);
                       }}
                       onClickEdit={() => {}}
@@ -356,8 +297,7 @@ export default function CommentPage() {
                       key={`partial-agree-comment-${index}`}
                       comment={targetComment}
                       onClickAddComment={() => {
-                        setTargetAddCommentId(comment.id);
-
+                        setTargetAddCommentId(targetComment.id);
                         setAddCommentInCommentModalOpen(true);
                       }}
                       onClickEdit={() => {}}
@@ -376,7 +316,7 @@ export default function CommentPage() {
                       key={`disagree-comment-${index}`}
                       comment={targetComment}
                       onClickAddComment={() => {
-                        setTargetAddCommentId(comment.id);
+                        setTargetAddCommentId(targetComment.id);
                         setAddCommentInCommentModalOpen(true);
                       }}
                       onClickEdit={() => {}}

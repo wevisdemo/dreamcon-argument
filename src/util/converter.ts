@@ -18,7 +18,6 @@ export const ConvertRoom = async (id: string, data: any): Promise<Room> => {
   const comments = await Promise.all(
     (data.comment_ids || []).map(async (commentId: string) => {
       const com = await getCommentWithoutChildren(commentId);
-      console.log("com => ", com);
       return com;
     })
   );
@@ -40,7 +39,6 @@ export const GetCommentWitChildren = async (
     const snapshot = await get(commentRef);
     if (snapshot.exists()) {
       const data = snapshot.val();
-      console.log(data);
       return ConvertCommentWithChildren(id, data);
     } else {
       console.log("No data available");
@@ -78,7 +76,6 @@ export const getCommentWithoutChildren = async (
     const snapshot = await get(commentRef);
     if (snapshot.exists()) {
       const data = snapshot.val();
-      console.log(data);
       return ConvertCommentWithoutChildren(id, data);
     } else {
       console.log("No data available");

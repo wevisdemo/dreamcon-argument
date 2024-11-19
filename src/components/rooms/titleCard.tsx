@@ -3,14 +3,40 @@ import { CommentView, Room } from "../../types/room";
 interface Props {
   room: Room;
   onClickAddComment: () => void;
+  onClickEdit: () => void;
+  onClickDelete: () => void;
 }
-export default function MiniCard({ room, onClickAddComment }: Props) {
+export default function MiniCard({
+  room,
+  onClickAddComment,
+  onClickEdit,
+  onClickDelete,
+}: Props) {
   const getCommentCountByView = (view: CommentView) => {
     return (room.comments || []).filter((c) => c.comment_view === view).length;
   };
   return (
     <div className="w-full flex flex-col space-y-[16px] p-[16px] md:p-[24px] bg-[#FFFFFF] drop-shadow-md rounded-[8px]">
-      {/* <div className="">{room.category}</div> */}
+      <div className="flex justify-end space-x-[24px]">
+        <div className="flex space-x-[8px] items-center">
+          <span>แก้ไข</span>
+          <img
+            src="/pen-icon.svg"
+            alt="pen-icon"
+            className="hover:cursor-pointer"
+            onClick={onClickEdit}
+          />
+        </div>
+        <div className="flex space-x-[8px] items-center text-[#CB3535]">
+          <span>ลบ</span>
+          <img
+            src="/bin-icon.svg"
+            alt="bin-icon"
+            className="hover:cursor-pointer"
+            onClick={onClickDelete}
+          />
+        </div>
+      </div>
       <h5 className="wv-ibmplex wv-bold text-[24px]">{room.title}</h5>
       <div className="flex flex-col md:flex-row justify-center items-center md:justify-between space-y-[16px] md:space-y-0 ">
         <div className="flex items-center justify-between">

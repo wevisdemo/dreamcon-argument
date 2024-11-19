@@ -26,6 +26,7 @@ export const ConvertRoom = async (id: string, data: any): Promise<Room> => {
     id: id as string,
     title: data.title,
     comments: comments,
+    child_node_ids: data.child_node_ids || [],
     created_at: data.created_at,
     updated_at: data.updated_at,
   };

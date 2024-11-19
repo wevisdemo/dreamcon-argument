@@ -2,6 +2,7 @@ export interface Room {
   id: string;
   title: string;
   comments: Comment[];
+  child_node_ids: string[];
   created_at: string;
   updated_at: string;
 }

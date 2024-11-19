@@ -15,6 +15,7 @@ import {
 } from "../lib/firebase";
 import { CommentView, Room, Comment, AddCommentPayload } from "../types/room";
 import { useParams } from "react-router-dom";
+import { HandleDeleteRoom } from "../util/room";
 
 export default function RoomPage(): ReactElement<any> {
   // const room = mockRoom; // TODO: change this to real data
@@ -50,6 +51,7 @@ export default function RoomPage(): ReactElement<any> {
       id: id as string,
       title: data.title,
       comments: comments,
+      child_node_ids: data.child_node_ids || [],
       created_at: data.created_at,
       updated_at: data.updated_at,
     };
@@ -261,6 +263,11 @@ export default function RoomPage(): ReactElement<any> {
           onClickAddComment={() => {
             setAddCommentModalOpen(true);
           }}
+          onClickDelete={() => {
+            HandleDeleteRoom(room);
+            window.location.href = "/";
+          }}
+          onClickEdit={() => {}}
         />
         {room.comments && (
           <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px]">

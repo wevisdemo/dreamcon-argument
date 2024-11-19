@@ -3,8 +3,15 @@ import { CommentView, Room } from "../types/room";
 interface Props {
   room: Room;
   onClickAddComment: (roomId: string) => void;
+  onClickEdit: () => void;
+  onClickDelete: () => void;
 }
-export default function MiniCard({ room, onClickAddComment }: Props) {
+export default function MiniCard({
+  room,
+  onClickAddComment,
+  onClickEdit,
+  onClickDelete,
+}: Props) {
   const getCommentCountByView = (view: CommentView) => {
     return (room.comments || []).filter((c) => c.comment_view === view).length;
   };
@@ -14,6 +21,20 @@ export default function MiniCard({ room, onClickAddComment }: Props) {
   };
   return (
     <div className="w-full flex flex-col space-y-[16px] max-w-[320px] p-[16px] bg-[#FFFFFF] drop-shadow-md rounded-[8px]">
+      <div className="flex justify-end space-x-[8px]">
+        <img
+          src="/pen-icon.svg"
+          alt="pen-icon"
+          className="hover:cursor-pointer"
+          onClick={onClickEdit}
+        />
+        <img
+          src="/bin-icon.svg"
+          alt="bin-icon"
+          className="hover:cursor-pointer"
+          onClick={onClickDelete}
+        />
+      </div>
       <a
         className="wv-ibmplex wv-bold text-[16px] leading-[20px]"
         href={`/rooms/${room.id}`}

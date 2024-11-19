@@ -5,11 +5,15 @@ interface Props {
   rooms: Room[];
   onClickAddRoom: () => void;
   onClickAddComment: (roomId: string) => void;
+  onClickEditRoom: (roomId: string) => void;
+  onClickDeleteRoom: (room: Room) => void;
 }
 export default function MiniCardWrapper({
   rooms,
   onClickAddRoom,
   onClickAddComment,
+  onClickEditRoom,
+  onClickDeleteRoom,
 }: Props) {
   return (
     <div className="flex flex-col space-y-[24px]">
@@ -39,6 +43,8 @@ export default function MiniCardWrapper({
             key={room.id}
             room={room}
             onClickAddComment={onClickAddComment}
+            onClickEdit={() => onClickEditRoom(room.id)}
+            onClickDelete={() => onClickDeleteRoom(room)}
           />
         ))}
       </div>

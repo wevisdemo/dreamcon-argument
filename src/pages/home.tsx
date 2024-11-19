@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { database, ref, onValue, set, push, get } from "../lib/firebase";
-import { mockRooms } from "../data/room";
-import MiniCard from "../components/miniCard";
 import MiniCardWrapper from "../components/miniCardWrapper";
 import Hero from "../components/hero";
 import Description from "../components/description";
@@ -13,8 +11,8 @@ import {
   AddCommentPayload,
 } from "../types/room";
 import AddRoomModal from "../components/addRoomModal";
-import { CommentDB } from "../types/database";
 import AddCommentModal from "../components/addCommentModal";
+import { HandleDeleteRoom } from "../util/room";
 
 export default function Home() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -83,6 +81,7 @@ export default function Home() {
         id: key,
         title: room.title,
         comments: comments || [],
+        child_node_ids: room.child_node_ids || [],
         created_at: room.created_at,
         updated_at: room.updated_at,
       });
@@ -183,6 +182,8 @@ export default function Home() {
           rooms={rooms}
           onClickAddRoom={() => setIsAddRoomModalOpen(true)}
           onClickAddComment={onClickAddComment}
+          onClickEditRoom={(roomId) => console.log("edit room", roomId)}
+          onClickDeleteRoom={(room) => HandleDeleteRoom(room)}
         />
       </section>
       <div className="bg-[#FFFFFF] h-[40px] flex relative">

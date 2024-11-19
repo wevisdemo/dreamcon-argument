@@ -153,7 +153,7 @@ export default function RoomPage(): ReactElement<any> {
     });
   };
 
-  const handleAddCommentInComment = (
+  const handleAddCommentInComment = async (
     commentId: string,
     payload: AddCommentPayload
   ) => {
@@ -173,7 +173,7 @@ export default function RoomPage(): ReactElement<any> {
     const newCommentId = newCommentRef.key;
     const commentRef = ref(database, "comments/" + commentId);
     try {
-      get(commentRef).then((snapshot) => {
+      await get(commentRef).then((snapshot) => {
         if (snapshot.exists()) {
           const data = snapshot.val();
           const commentIds = data.comment_ids || [];
@@ -190,7 +190,7 @@ export default function RoomPage(): ReactElement<any> {
     }
 
     const roomRef = ref(database, "rooms/" + room?.id);
-    get(roomRef).then((snapshot) => {
+    await get(roomRef).then((snapshot) => {
       if (snapshot.exists()) {
         set(ref(database, "rooms/" + room?.id + "/updated_at"), timeNow);
       }

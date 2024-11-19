@@ -16,8 +16,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, submitComment }) => {
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      handleClose();
     }
+  };
+
+  const handleClose = () => {
+    setText("");
+    setCommentView(null);
+    onClose();
   };
 
   const getConfirmStyle = () =>
@@ -48,7 +54,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, submitComment }) => {
         reason: text,
       });
     }
-    onClose();
+    handleClose();
   };
 
   return (
@@ -60,7 +66,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, submitComment }) => {
         <div className="flex justify-between px-[16px] py-[12px] border-solid border-b-[1px] border-[#D4D4D4]">
           <button
             className="py-[10px] px-[16px] text-16 wv-ibmplex wv-bold "
-            onClick={onClose}
+            onClick={handleClose}
           >
             ยกเลิก
           </button>

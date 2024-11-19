@@ -15,8 +15,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddRoom }) => {
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      handleClose();
     }
+  };
+
+  const handleClose = () => {
+    setText("");
+    onClose();
   };
 
   const getConfirmStyle = () =>
@@ -26,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddRoom }) => {
 
   const onSubmit = () => {
     onAddRoom({ title: text });
-    onClose();
+    handleClose();
   };
 
   return (
@@ -38,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddRoom }) => {
         <div className="flex justify-between px-[16px] py-[12px] border-solid border-b-[1px] border-[#D4D4D4]">
           <button
             className="py-[10px] px-[16px] text-16 wv-ibmplex wv-bold "
-            onClick={onClose}
+            onClick={handleClose}
           >
             ยกเลิก
           </button>

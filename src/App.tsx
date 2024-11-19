@@ -1,5 +1,4 @@
 import "@wevisdemo/ui/styles/index.css";
-import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Room from "./pages/room";
 import Comment from "./pages/comment";

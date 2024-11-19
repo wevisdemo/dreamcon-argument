@@ -1,12 +1,4 @@
 import { Comment, CommentView } from "../types/room";
-import {
-  database,
-  ref,
-  runTransaction,
-  increment,
-  update,
-  get,
-} from "../lib/firebase";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -14,12 +6,16 @@ interface Props {
   fullWidth?: boolean;
   onClickLike: () => void;
   onClickAddComment: () => void;
+  onClickEdit: () => void;
+  onClickDelete: () => void;
 }
 export default function CommentCard({
   comment,
   fullWidth,
   onClickLike,
   onClickAddComment,
+  onClickEdit,
+  onClickDelete,
 }: Props) {
   const getCommentCountByView = (view: CommentView) => {
     return (comment.comments || []).filter((c) => c.comment_view === view)
@@ -57,6 +53,20 @@ export default function CommentCard({
           fullWidth ? "max-w-full" : "max-w-[232px]"
         } flex flex-col gap-[8px] p-[16px]`}
       >
+        <div className="flex justify-end space-x-[8px]">
+          <img
+            src="/pen-icon.svg"
+            alt="pen-icon"
+            className="w-[24px] hover:cursor-pointer"
+            onClick={onClickEdit}
+          />
+          <img
+            src="/bin-icon.svg"
+            alt="bin-icon"
+            className="w-[24px] hover:cursor-pointer"
+            onClick={onClickDelete}
+          />
+        </div>
         <a href={`/comments/${comment.id}`} className="flex items-center">
           <h5
             className={`wv-ibmplex wv-bold text-[16px] `}

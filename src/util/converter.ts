@@ -62,6 +62,7 @@ export const ConvertCommentWithoutChildren = (
     reason: data.reason,
     like_count: data.like_count,
     comments: [], // no need to use
+    child_node_ids: data.child_node_ids || [],
     parent_comment_ids: data.parent_comment_ids || [],
     parent_room_id: data.parent_room_id,
     created_at: data.created_at,
@@ -105,6 +106,7 @@ export const ConvertCommentWithChildren = async (
       reason: data.reason,
       like_count: data.like_count,
       comments: await comments,
+      child_node_ids: data.child_node_ids || [],
       parent_comment_ids: data.parent_comment_ids || [],
       parent_room_id: data.parent_room_id,
       created_at: data.created_at,
@@ -117,6 +119,7 @@ export const ConvertCommentWithChildren = async (
     reason: data.reason,
     like_count: data.like_count,
     comments: data.comments || [],
+    child_node_ids: data.child_node_ids || [],
     parent_comment_ids: data.parent_comment_ids || [],
     parent_room_id: data.parent_room_id,
     created_at: data.created_at,

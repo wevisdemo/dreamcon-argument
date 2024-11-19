@@ -49,6 +49,7 @@ export default function Home() {
       parent_comment_ids: data.parent_comment_ids || [],
       parent_room_id: data.parent_room_id,
       comments: [], // no need to use
+      child_node_ids: data.child_node_ids || [],
       created_at: data.created_at,
       updated_at: data.updated_at,
     };

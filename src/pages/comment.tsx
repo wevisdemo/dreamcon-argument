@@ -14,6 +14,7 @@ import {
 } from "../lib/firebase";
 import { ConvertRoom, GetCommentWitChildren } from "../util/converter";
 import AddCommentModal from "../components/addCommentModal";
+import { HandleDeleteComment } from "../util/comment";
 
 interface MapComment {
   [id: string]: Comment;
@@ -267,6 +268,10 @@ export default function CommentPage() {
     fetchComment();
   };
 
+  const handleDeleteComment = async (comment: Comment) => {
+    HandleDeleteComment(comment);
+  };
+
   return (
     <div>
       {comment != null && room != null ? (
@@ -300,6 +305,8 @@ export default function CommentPage() {
                     setTargetAddCommentId(parentComment.id);
                     setAddCommentInParentModalOpen(true);
                   }}
+                  onClickEdit={() => {}}
+                  onClickDelete={() => handleDeleteComment(parentComment)}
                 />
               </div>
             ))}
@@ -310,6 +317,11 @@ export default function CommentPage() {
                 onClickLike={() => handleLikeComment()}
                 onClickAddComment={() => {
                   setAddCommentModalOpen(true);
+                }}
+                onClickEdit={() => {}}
+                onClickDelete={() => {
+                  handleDeleteComment(comment);
+                  window.location.href = "/";
                 }}
               />
             </div>
@@ -328,6 +340,8 @@ export default function CommentPage() {
                         setTargetAddCommentId(comment.id);
                         setAddCommentInCommentModalOpen(true);
                       }}
+                      onClickEdit={() => {}}
+                      onClickDelete={() => handleDeleteComment(targetComment)}
                     />
                   )
                 )}
@@ -346,6 +360,8 @@ export default function CommentPage() {
 
                         setAddCommentInCommentModalOpen(true);
                       }}
+                      onClickEdit={() => {}}
+                      onClickDelete={() => handleDeleteComment(targetComment)}
                     />
                   )
                 )}
@@ -363,6 +379,8 @@ export default function CommentPage() {
                         setTargetAddCommentId(comment.id);
                         setAddCommentInCommentModalOpen(true);
                       }}
+                      onClickEdit={() => {}}
+                      onClickDelete={() => handleDeleteComment(targetComment)}
                     />
                   )
                 )}

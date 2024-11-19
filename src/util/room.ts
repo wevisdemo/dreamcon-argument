@@ -3,18 +3,13 @@ import { AddCommentPayload, AddRoomPayload, Room } from "../types/room";
 import { database } from "../lib/firebase";
 
 export const HandleDeleteRoom = async (room: Room) => {
-  if (!room) {
-    return;
-  }
-
   const updates = {} as any;
+  const roomRef = ref(database, "rooms/" + room.id);
+  set(roomRef, null);
   for (const childId of room.child_node_ids || []) {
     updates["/comments/" + childId] = null;
   }
   await update(ref(database), updates);
-
-  const roomRef = ref(database, "rooms/" + room?.id);
-  set(roomRef, null);
 };
 
 export const HandleAddCommentToRoom = async (

@@ -1,6 +1,5 @@
 import { AddRoomPayload, Room } from "../types/room";
-import { on } from "events";
-import React, { ReactNode, useEffect } from "react";
+import React, { useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;

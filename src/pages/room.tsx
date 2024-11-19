@@ -27,6 +27,7 @@ import {
   HandleEditRoom,
 } from "../util/room";
 import AddRoomModal from "../components/addRoomModal";
+import { HandleDeleteComment, HandleEditComment } from "../util/comment";
 
 export default function RoomPage(): ReactElement<any> {
   // const room = mockRoom; // TODO: change this to real data
@@ -52,11 +53,13 @@ export default function RoomPage(): ReactElement<any> {
 
   const convertRoom = async (data: any): Promise<Room> => {
     const comments = await Promise.all(
-      (data.comment_ids || []).map(async (commentId: string) => {
-        const com = await getComment(commentId);
-        console.log("com => ", com);
-        return com;
-      })
+      (data.comment_ids || [])
+        .map(async (commentId: string) => {
+          const com = await getComment(commentId);
+          console.log("com => ", com);
+          return com;
+        })
+        .filter((c: any) => c !== null)
     );
     return {
       id: id as string,
@@ -110,6 +113,7 @@ export default function RoomPage(): ReactElement<any> {
       reason: data.reason,
       like_count: data.like_count,
       comments: [], // no need to use
+      child_node_ids: data.child_node_ids || [],
       parent_comment_ids: data.parent_comment_ids || [],
       parent_room_id: data.parent_room_id,
       created_at: data.created_at,
@@ -130,6 +134,7 @@ export default function RoomPage(): ReactElement<any> {
         reason: data.reason,
         like_count: data.like_count,
         comments: await comments,
+        child_node_ids: data.child_node_ids || [],
         parent_comment_ids: data.parent_comment_ids || [],
         parent_room_id: data.parent_room_id,
         created_at: data.created_at,
@@ -142,6 +147,7 @@ export default function RoomPage(): ReactElement<any> {
       reason: data.reason,
       like_count: data.like_count,
       comments: [], // no need to use
+      child_node_ids: data.child_node_ids || [],
       parent_comment_ids: data.parent_comment_ids || [],
       parent_room_id: data.parent_room_id,
       created_at: data.created_at,
@@ -235,6 +241,7 @@ export default function RoomPage(): ReactElement<any> {
   const [addCommentInCommentModalOpen, setAddCommentInCommentModalOpen] =
     useState<boolean>(false);
   const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
+  const [isEditCommentModalOpen, setIsEditCommentModalOpen] = useState(false);
 
   const [targetCommentId, setTargetCommentId] = useState<string>("");
 
@@ -248,6 +255,29 @@ export default function RoomPage(): ReactElement<any> {
   const getCommentsByView = (view: CommentView) => {
     console.log("fetch room", room);
     return (room?.comments || []).filter((c) => c.comment_view === view);
+  };
+
+  const getCommentById = (id: string) => {
+    return room?.comments.find((c) => c.id === id);
+  };
+
+  const handleDeleteComment = async (comment: Comment) => {
+    await HandleDeleteComment(comment);
+  };
+
+  const handleDeleteRoom = async (room: Room) => {
+    await HandleDeleteRoom(room);
+    window.location.href = "/";
+  };
+
+  const handleEditComment = async (
+    commentId: string,
+    payload: AddCommentPayload
+  ) => {
+    console.log("edit comment", commentId, payload);
+    await HandleEditComment(commentId, payload);
+    setIsEditCommentModalOpen(false);
+    setTargetCommentId("");
   };
 
   return room !== null ? (
@@ -266,8 +296,7 @@ export default function RoomPage(): ReactElement<any> {
             setAddCommentModalOpen(true);
           }}
           onClickDelete={() => {
-            HandleDeleteRoom(room);
-            window.location.href = "/";
+            handleDeleteRoom(room);
           }}
           onClickEdit={() => {
             setIsEditRoomModalOpen(true);
@@ -285,6 +314,11 @@ export default function RoomPage(): ReactElement<any> {
                     setTargetCommentId(comment.id);
                     setAddCommentInCommentModalOpen(true);
                   }}
+                  onClickEdit={() => {
+                    setTargetCommentId(comment.id);
+                    setIsEditCommentModalOpen(true);
+                  }}
+                  onClickDelete={() => handleDeleteComment(comment)}
                 />
               ))}
             </div>
@@ -299,6 +333,11 @@ export default function RoomPage(): ReactElement<any> {
                       setTargetCommentId(comment.id);
                       setAddCommentInCommentModalOpen(true);
                     }}
+                    onClickEdit={() => {
+                      setTargetCommentId(comment.id);
+                      setIsEditCommentModalOpen(true);
+                    }}
+                    onClickDelete={() => handleDeleteComment(comment)}
                   />
                 )
               )}
@@ -313,6 +352,11 @@ export default function RoomPage(): ReactElement<any> {
                     setTargetCommentId(comment.id);
                     setAddCommentInCommentModalOpen(true);
                   }}
+                  onClickEdit={() => {
+                    setTargetCommentId(comment.id);
+                    setIsEditCommentModalOpen(true);
+                  }}
+                  onClickDelete={() => handleDeleteComment(comment)}
                 />
               ))}
             </div>
@@ -344,6 +388,16 @@ export default function RoomPage(): ReactElement<any> {
         submitComment={(payload) =>
           handleAddCommentInComment(targetCommentId, payload)
         }
+      ></AddCommentModal>
+      {/* for edit comment */}
+      <AddCommentModal
+        isOpen={isEditCommentModalOpen}
+        onClose={() => {
+          setIsEditCommentModalOpen(false);
+          setTargetCommentId("");
+        }}
+        submitComment={(payload) => handleEditComment(targetCommentId, payload)}
+        defaultState={getCommentById(targetCommentId)}
       ></AddCommentModal>
     </div>
   ) : (

@@ -1,17 +1,27 @@
-import { AddCommentPayload, CommentView } from "../types/room";
-import React, { ReactNode } from "react";
+import { AddCommentPayload, CommentView, Comment } from "../types/room";
+import React, { useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   submitComment: (payload: AddCommentPayload) => void;
+  defaultState?: Comment;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, submitComment }) => {
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  submitComment,
+  defaultState,
+}) => {
   const [text, setText] = React.useState<string>("");
   const [commentView, setCommentView] = React.useState<CommentView | null>(
     null
   );
+  useEffect(() => {
+    setText(defaultState?.reason || "");
+    setCommentView(defaultState?.comment_view || null);
+  }, [defaultState]);
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {

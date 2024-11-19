@@ -24,6 +24,7 @@ export interface Comment {
   parent_room_id: string;
   parent_comment_ids: string[];
   comments: Comment[];
+  child_node_ids: string[];
   created_at: string;
   updated_at: string;
 }

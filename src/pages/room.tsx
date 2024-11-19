@@ -15,7 +15,7 @@ import {
 } from "../lib/firebase";
 import { CommentView, Room, Comment, AddCommentPayload } from "../types/room";
 import { useParams } from "react-router-dom";
-import { HandleDeleteRoom } from "../util/room";
+import { HandleAddCommentToRoom, HandleDeleteRoom } from "../util/room";
 
 export default function RoomPage(): ReactElement<any> {
   // const room = mockRoom; // TODO: change this to real data
@@ -218,29 +218,11 @@ export default function RoomPage(): ReactElement<any> {
     useState<boolean>(false);
   const [targetCommentId, setTargetCommentId] = useState<string>("");
 
-  const onSubmitComment = (roomId: string, payload: AddCommentPayload) => {
-    const timeNow = new Date().toISOString();
-    const dbPayload = {
-      comment_view: payload.comment_view,
-      reason: payload.reason,
-      parent_room_id: roomId,
-      like_count: 0,
-      created_at: timeNow,
-      updated_at: timeNow,
-    };
-
-    const newCommentRef = push(ref(database, "comments/"), dbPayload);
-    const newCommentId = newCommentRef.key;
-    const roomRef = ref(database, "rooms/" + roomId);
-    get(roomRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        const commentIds = data.comment_ids || [];
-        commentIds.push(newCommentId);
-        set(ref(database, "rooms/" + roomId + "/comment_ids"), commentIds);
-        set(ref(database, "rooms/" + roomId + "/updated_at"), timeNow);
-      }
-    });
+  const handleAddCommentToRoom = async (
+    roomId: string,
+    payload: AddCommentPayload
+  ) => {
+    await HandleAddCommentToRoom(roomId, payload);
   };
 
   const getCommentsByView = (view: CommentView) => {
@@ -318,7 +300,7 @@ export default function RoomPage(): ReactElement<any> {
       <AddCommentModal
         isOpen={addCommentModalOpen}
         onClose={() => setAddCommentModalOpen(false)}
-        submitComment={(payload) => onSubmitComment(room.id, payload)}
+        submitComment={(payload) => handleAddCommentToRoom(room.id, payload)}
       ></AddCommentModal>
       <AddCommentModal
         isOpen={addCommentInCommentModalOpen}

@@ -12,7 +12,7 @@ import {
 } from "../types/room";
 import AddRoomModal from "../components/addRoomModal";
 import AddCommentModal from "../components/addCommentModal";
-import { HandleDeleteRoom } from "../util/room";
+import { HandleAddCommentToRoom, HandleDeleteRoom } from "../util/room";
 
 export default function Home() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -121,29 +121,11 @@ export default function Home() {
     const newRoomRef = push(ref(database, "rooms/"), dbPayload);
   };
 
-  const onAddComment = (roomId: string, payload: AddCommentPayload) => {
-    const timeNow = new Date().toISOString();
-    const dbPayload = {
-      comment_view: payload.comment_view,
-      reason: payload.reason,
-      parent_room_id: roomId,
-      like_count: 0,
-      created_at: timeNow,
-      updated_at: timeNow,
-    };
-
-    const newCommentRef = push(ref(database, "comments/"), dbPayload);
-    const newCommentId = newCommentRef.key;
-    const roomRef = ref(database, "rooms/" + roomId);
-    get(roomRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        const commentIds = data.comment_ids || [];
-        commentIds.push(newCommentId);
-        set(ref(database, "rooms/" + roomId + "/comment_ids"), commentIds);
-        set(ref(database, "rooms/" + roomId + "/updated_at"), timeNow);
-      }
-    });
+  const handleAddCommentToRoom = async (
+    roomId: string,
+    payload: AddCommentPayload
+  ) => {
+    await HandleAddCommentToRoom(roomId, payload);
   };
 
   const onClosedAddCommentModal = () => {
@@ -200,7 +182,9 @@ export default function Home() {
       <AddCommentModal
         isOpen={isAddCommentModalOpen}
         onClose={onClosedAddCommentModal}
-        submitComment={(payload) => onAddComment(addCommentRoomId, payload)}
+        submitComment={(payload) =>
+          handleAddCommentToRoom(addCommentRoomId, payload)
+        }
       />
     </div>
   );

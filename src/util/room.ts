@@ -1,5 +1,5 @@
 import { get, push, ref, set, update } from "firebase/database";
-import { AddCommentPayload, Room } from "../types/room";
+import { AddCommentPayload, AddRoomPayload, Room } from "../types/room";
 import { database } from "../lib/firebase";
 
 export const HandleDeleteRoom = async (room: Room) => {
@@ -49,4 +49,16 @@ export const HandleAddCommentToRoom = async (
       update(ref(database), updates);
     }
   });
+};
+
+export const HandleEditRoom = async (
+  roomId: string,
+  payload: AddRoomPayload
+) => {
+  const timeNow = new Date().toISOString();
+  const updates = {
+    ["rooms/" + roomId + "/title"]: payload.title,
+    ["rooms/" + roomId + "/updated_at"]: timeNow,
+  };
+  await update(ref(database), updates);
 };

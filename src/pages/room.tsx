@@ -13,9 +13,20 @@ import {
   increment,
   update,
 } from "../lib/firebase";
-import { CommentView, Room, Comment, AddCommentPayload } from "../types/room";
+import {
+  CommentView,
+  Room,
+  Comment,
+  AddCommentPayload,
+  AddRoomPayload,
+} from "../types/room";
 import { useParams } from "react-router-dom";
-import { HandleAddCommentToRoom, HandleDeleteRoom } from "../util/room";
+import {
+  HandleAddCommentToRoom,
+  HandleDeleteRoom,
+  HandleEditRoom,
+} from "../util/room";
+import AddRoomModal from "../components/addRoomModal";
 
 export default function RoomPage(): ReactElement<any> {
   // const room = mockRoom; // TODO: change this to real data
@@ -155,6 +166,13 @@ export default function RoomPage(): ReactElement<any> {
     });
   };
 
+  const handleEditRoom = async (payload: AddRoomPayload) => {
+    if (!room) {
+      return;
+    }
+    await HandleEditRoom(room.id, payload);
+  };
+
   const handleAddCommentInComment = async (
     commentId: string,
     payload: AddCommentPayload
@@ -216,6 +234,8 @@ export default function RoomPage(): ReactElement<any> {
     useState<boolean>(false);
   const [addCommentInCommentModalOpen, setAddCommentInCommentModalOpen] =
     useState<boolean>(false);
+  const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
+
   const [targetCommentId, setTargetCommentId] = useState<string>("");
 
   const handleAddCommentToRoom = async (
@@ -249,7 +269,9 @@ export default function RoomPage(): ReactElement<any> {
             HandleDeleteRoom(room);
             window.location.href = "/";
           }}
-          onClickEdit={() => {}}
+          onClickEdit={() => {
+            setIsEditRoomModalOpen(true);
+          }}
         />
         {room.comments && (
           <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px]">
@@ -297,6 +319,17 @@ export default function RoomPage(): ReactElement<any> {
           </div>
         )}
       </section>
+      {/* for edit */}
+      <AddRoomModal
+        isOpen={isEditRoomModalOpen}
+        onClose={() => {
+          setIsEditRoomModalOpen(false);
+        }}
+        onAddRoom={(payload) => {
+          handleEditRoom(payload);
+        }}
+        defaultState={room}
+      />
       <AddCommentModal
         isOpen={addCommentModalOpen}
         onClose={() => setAddCommentModalOpen(false)}
@@ -314,6 +347,6 @@ export default function RoomPage(): ReactElement<any> {
       ></AddCommentModal>
     </div>
   ) : (
-    <div></div>
+    <div>404</div>
   );
 }

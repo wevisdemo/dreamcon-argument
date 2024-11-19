@@ -12,7 +12,11 @@ import {
 } from "../types/room";
 import AddRoomModal from "../components/addRoomModal";
 import AddCommentModal from "../components/addCommentModal";
-import { HandleAddCommentToRoom, HandleDeleteRoom } from "../util/room";
+import {
+  HandleAddCommentToRoom,
+  HandleDeleteRoom,
+  HandleEditRoom,
+} from "../util/room";
 
 export default function Home() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -106,8 +110,10 @@ export default function Home() {
   }, []);
 
   const [isAddRoomModalOpen, setIsAddRoomModalOpen] = useState(false);
+  const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
   const [isAddCommentModalOpen, setIsAddCommentModalOpen] = useState(false);
   const [addCommentRoomId, setAddCommentRoomId] = useState<string>("");
+  const [editRoomId, setEditRoomId] = useState<string>("");
 
   const addRoom = (payload: AddRoomPayload) => {
     const timeNow = new Date().toISOString();
@@ -119,6 +125,14 @@ export default function Home() {
     };
 
     const newRoomRef = push(ref(database, "rooms/"), dbPayload);
+  };
+
+  const handleEditRoom = async (payload: AddRoomPayload) => {
+    await HandleEditRoom(editRoomId, payload);
+  };
+
+  const getRoomById = (roomId: string) => {
+    return rooms.find((room) => room.id === roomId);
   };
 
   const handleAddCommentToRoom = async (
@@ -164,7 +178,10 @@ export default function Home() {
           rooms={rooms}
           onClickAddRoom={() => setIsAddRoomModalOpen(true)}
           onClickAddComment={onClickAddComment}
-          onClickEditRoom={(roomId) => console.log("edit room", roomId)}
+          onClickEditRoom={(roomId) => {
+            setEditRoomId(roomId);
+            setIsEditRoomModalOpen(true);
+          }}
           onClickDeleteRoom={(room) => HandleDeleteRoom(room)}
         />
       </section>
@@ -174,10 +191,23 @@ export default function Home() {
           className="bg-repeat w-full h-[16px] absolute top-[-2px]"
         />
       </div>
+      {/* for add */}
       <AddRoomModal
         isOpen={isAddRoomModalOpen}
         onClose={() => setIsAddRoomModalOpen(false)}
         onAddRoom={addRoom}
+      />
+      {/* for edit */}
+      <AddRoomModal
+        isOpen={isEditRoomModalOpen}
+        onClose={() => {
+          setIsEditRoomModalOpen(false);
+          setEditRoomId("");
+        }}
+        onAddRoom={(payload) => {
+          handleEditRoom(payload);
+        }}
+        defaultState={getRoomById(editRoomId)}
       />
       <AddCommentModal
         isOpen={isAddCommentModalOpen}

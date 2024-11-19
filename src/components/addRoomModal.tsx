@@ -1,15 +1,25 @@
-import { AddRoomPayload } from "../types/room";
+import { AddRoomPayload, Room } from "../types/room";
 import { on } from "events";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAddRoom: (payload: AddRoomPayload) => void;
+  defaultState?: Room;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddRoom }) => {
-  const [text, setText] = React.useState("");
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  onAddRoom,
+  defaultState,
+}) => {
+  const [text, setText] = React.useState(defaultState?.title || "");
+
+  useEffect(() => {
+    setText(defaultState?.title || "");
+  }, [defaultState]);
 
   if (!isOpen) return null;
 

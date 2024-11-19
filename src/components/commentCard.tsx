@@ -58,7 +58,9 @@ export default function CommentCard({
             src="/pen-icon.svg"
             alt="pen-icon"
             className="w-[24px] hover:cursor-pointer"
-            onClick={onClickEdit}
+            onClick={() => {
+              onClickEdit();
+            }}
           />
           <img
             src="/bin-icon.svg"

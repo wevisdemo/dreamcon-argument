@@ -17,6 +17,7 @@ import AddCommentModal from "../components/addCommentModal";
 import {
   HandleAddCommentToComment,
   HandleDeleteComment,
+  HandleEditComment,
 } from "../util/comment";
 
 interface MapComment {
@@ -35,6 +36,11 @@ export default function CommentPage() {
   const [addCommentInParentModalOpen, setAddCommentInParentModalOpen] =
     useState<boolean>(false);
   const [targetAddCommentId, setTargetAddCommentId] = useState<string>("");
+  const [editCommentModalOpen, setEditCommentModalOpen] =
+    useState<boolean>(false);
+  const [targetEditComment, setTargetEditComment] = useState<Comment | null>(
+    null
+  );
 
   const commentId = id as string;
 
@@ -95,7 +101,6 @@ export default function CommentPage() {
         );
         convertedComment.comments = filteredCommentsInComment as Comment[];
 
-        console.log("convertedComment => ", convertedComment);
         setComment(convertedComment);
       }
     });
@@ -210,6 +215,16 @@ export default function CommentPage() {
     HandleDeleteComment(comment);
   };
 
+  const handleEditComment = async (
+    commentId: string,
+    payload: AddCommentPayload
+  ) => {
+    await HandleEditComment(commentId, payload);
+    setTargetEditComment(null);
+    setEditCommentModalOpen(false);
+    fetchComment();
+  };
+
   return (
     <div>
       {comment != null && room != null ? (
@@ -243,7 +258,10 @@ export default function CommentPage() {
                     setTargetAddCommentId(parentComment.id);
                     setAddCommentInParentModalOpen(true);
                   }}
-                  onClickEdit={() => {}}
+                  onClickEdit={() => {
+                    setTargetEditComment(parentComment);
+                    setEditCommentModalOpen(true);
+                  }}
                   onClickDelete={() => {
                     handleDeleteComment(parentComment);
                     window.location.href = "/";
@@ -259,7 +277,10 @@ export default function CommentPage() {
                 onClickAddComment={() => {
                   setAddCommentModalOpen(true);
                 }}
-                onClickEdit={() => {}}
+                onClickEdit={() => {
+                  setTargetEditComment(comment);
+                  setEditCommentModalOpen(true);
+                }}
                 onClickDelete={() => {
                   handleDeleteComment(comment);
                   window.location.href = "/";
@@ -281,7 +302,10 @@ export default function CommentPage() {
                         setTargetAddCommentId(targetComment.id);
                         setAddCommentInCommentModalOpen(true);
                       }}
-                      onClickEdit={() => {}}
+                      onClickEdit={() => {
+                        setTargetEditComment(targetComment);
+                        setEditCommentModalOpen(true);
+                      }}
                       onClickDelete={() => handleDeleteComment(targetComment)}
                     />
                   )
@@ -300,7 +324,10 @@ export default function CommentPage() {
                         setTargetAddCommentId(targetComment.id);
                         setAddCommentInCommentModalOpen(true);
                       }}
-                      onClickEdit={() => {}}
+                      onClickEdit={() => {
+                        setTargetEditComment(targetComment);
+                        setEditCommentModalOpen(true);
+                      }}
                       onClickDelete={() => handleDeleteComment(targetComment)}
                     />
                   )
@@ -319,7 +346,10 @@ export default function CommentPage() {
                         setTargetAddCommentId(targetComment.id);
                         setAddCommentInCommentModalOpen(true);
                       }}
-                      onClickEdit={() => {}}
+                      onClickEdit={() => {
+                        setTargetEditComment(targetComment);
+                        setEditCommentModalOpen(true);
+                      }}
                       onClickDelete={() => handleDeleteComment(targetComment)}
                     />
                   )
@@ -353,6 +383,17 @@ export default function CommentPage() {
             submitComment={(payload) =>
               handleAddCommentToParentComment(targetAddCommentId, payload)
             }
+          ></AddCommentModal>
+          <AddCommentModal
+            isOpen={editCommentModalOpen}
+            onClose={() => {
+              setTargetEditComment(null);
+              setEditCommentModalOpen(false);
+            }}
+            submitComment={(payload) =>
+              handleEditComment(targetEditComment?.id || "", payload)
+            }
+            defaultState={targetEditComment || undefined}
           ></AddCommentModal>
         </div>
       ) : (

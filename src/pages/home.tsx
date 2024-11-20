@@ -190,6 +190,7 @@ export default function Home() {
         }
       />
       <DeleteModal
+        title="ลบข้อถกเถียงนี้"
         isOpen={isDeleteModalOpen}
         onClose={() => {
           setIsDeleteModalOpen(false);

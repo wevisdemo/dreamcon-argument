@@ -1,13 +1,13 @@
-import { AddRoomPayload, Room } from "../types/room";
-import React, { useEffect } from "react";
+import React from "react";
 
 interface ModalProps {
+  title: string;
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm }) => {
+const Modal: React.FC<ModalProps> = ({ title, isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -32,9 +32,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm }) => {
     >
       <div className="flex flex-col space-y-[24px] w-full p-[16px] h-full md:h-auto md:max-w-[272px] bg-white md:rounded-lg shadow-lg">
         <div className="flex justify-between">
-          <span className="wv-ibmplex wv-bold text-[16px]">
-            ลบข้อถกเถียงนี้
-          </span>
+          <span className="wv-ibmplex wv-bold text-[16px]">{title}</span>
           <img
             className="w-[14px] hover:cursor-pointer"
             src="/close-icon.svg"

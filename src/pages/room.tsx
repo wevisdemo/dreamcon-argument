@@ -319,6 +319,7 @@ export default function RoomPage(): ReactElement<any> {
       ></AddCommentModal>
       {/* Delete Room */}
       <DeleteModal
+        title="ลบข้อถกเถียงนี้"
         isOpen={isDeleteRoomModalOpen}
         onClose={() => {
           setIsDeleteRoomModalOpen(false);
@@ -331,6 +332,7 @@ export default function RoomPage(): ReactElement<any> {
       />
       {/* Delete Comment */}
       <DeleteModal
+        title="ลบความคิดเห็นนี้"
         isOpen={isDeleteCommentModalOpen}
         onClose={() => {
           setIsDeleteCommentModalOpen(false);

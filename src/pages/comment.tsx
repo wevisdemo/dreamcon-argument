@@ -436,6 +436,7 @@ export default function CommentPage() {
           ></AddCommentModal>
           {/* Delete Comment */}
           <DeleteModal
+            title="ลบความคิดเห็นนี้"
             isOpen={isDeleteCommentModalOpen}
             onClose={() => {
               setIsDeleteCommentModalOpen(false);

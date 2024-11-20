@@ -83,7 +83,7 @@ const Modal: React.FC<ModalProps> = ({
           <button
             className={getConfirmStyle()}
             onClick={onSubmit}
-            disabled={text === ""}
+            disabled={text === "" || commentView === null}
           >
             โพสต์
           </button>

@@ -228,132 +228,140 @@ export default function CommentPage() {
   return (
     <div>
       {comment != null && room != null ? (
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-[#F8F8F8]">
           {comment != null && room != null ? <div /> : <div>Loading...</div>}
           <section
             id="header"
             className="px-[16px] md:px-[160px] py-[8px] md:py-[16px] bg-[#BDE6FF]"
           >
-            <a
-              href="/"
-              className="wv-ibmplex wv-semibold text-[#1C4CD3] underline "
-            >
-              {"< ข้อถกเถียง"}
-            </a>
-          </section>
-          <section className="md:px-[160px] p-0">
-            <h4 className="wv-ibmplex wv-bold text-[16px] md:text-[25px] bg-[#FFFFFF] rounded-b-[8px] drop-shadow-md p-[16px] md:p-[24px]">
-              {room?.title}
-            </h4>
-            {parentComments().map((parentComment) => (
-              <div
-                className="mt-[40px] w-full"
-                key={`parent-comment-${parentComment.id}`}
+            <div className="max-w-[960px] w-full m-auto">
+              <a
+                href="/"
+                className="wv-ibmplex wv-semibold text-[#1C4CD3] underline "
               >
+                {"< ข้อถกเถียง"}
+              </a>
+            </div>
+          </section>
+          <section className="md:px-[160px]">
+            <div className="max-w-[960px] w-full m-auto">
+              <h4 className="wv-ibmplex wv-bold text-[16px] md:text-[25px] bg-[#FFFFFF] rounded-b-[8px] drop-shadow-md p-[16px] md:p-[24px]">
+                {room?.title}
+              </h4>
+            </div>
+          </section>
+          <section className="md:px-[160px] p-[24px] pt-0">
+            <div className="max-w-[960px] w-full m-auto">
+              {parentComments().map((parentComment) => (
+                <div
+                  className="mt-[40px] w-full"
+                  key={`parent-comment-${parentComment.id}`}
+                >
+                  <CommentCard
+                    comment={parentComment}
+                    fullWidth
+                    onClickLike={() => handleLikeChildComment(parentComment.id)}
+                    onClickAddComment={() => {
+                      setTargetAddCommentId(parentComment.id);
+                      setAddCommentInParentModalOpen(true);
+                    }}
+                    onClickEdit={() => {
+                      setTargetEditComment(parentComment);
+                      setEditCommentModalOpen(true);
+                    }}
+                    onClickDelete={() => {
+                      handleDeleteComment(parentComment);
+                      window.location.href = "/";
+                    }}
+                  />
+                </div>
+              ))}
+              <div className="mt-[40px] w-full">
                 <CommentCard
-                  comment={parentComment}
+                  comment={comment}
                   fullWidth
-                  onClickLike={() => handleLikeChildComment(parentComment.id)}
+                  onClickLike={() => handleLikeComment()}
                   onClickAddComment={() => {
-                    setTargetAddCommentId(parentComment.id);
-                    setAddCommentInParentModalOpen(true);
+                    setAddCommentModalOpen(true);
                   }}
                   onClickEdit={() => {
-                    setTargetEditComment(parentComment);
+                    setTargetEditComment(comment);
                     setEditCommentModalOpen(true);
                   }}
                   onClickDelete={() => {
-                    handleDeleteComment(parentComment);
+                    handleDeleteComment(comment);
                     window.location.href = "/";
                   }}
                 />
               </div>
-            ))}
-            <div className="mt-[40px] w-full">
-              <CommentCard
-                comment={comment}
-                fullWidth
-                onClickLike={() => handleLikeComment()}
-                onClickAddComment={() => {
-                  setAddCommentModalOpen(true);
-                }}
-                onClickEdit={() => {
-                  setTargetEditComment(comment);
-                  setEditCommentModalOpen(true);
-                }}
-                onClickDelete={() => {
-                  handleDeleteComment(comment);
-                  window.location.href = "/";
-                }}
-              />
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px]">
-              <div className=" w-full flex flex-col gap-[16px] items-center">
-                {getCommentsByView(CommentView.AGREE).map(
-                  (targetComment, index) => (
-                    <CommentCard
-                      onClickLike={() =>
-                        handleLikeChildComment(targetComment.id)
-                      }
-                      key={`agree-comment-${index}`}
-                      comment={targetComment}
-                      onClickAddComment={() => {
-                        setTargetAddCommentId(targetComment.id);
-                        setAddCommentInCommentModalOpen(true);
-                      }}
-                      onClickEdit={() => {
-                        setTargetEditComment(targetComment);
-                        setEditCommentModalOpen(true);
-                      }}
-                      onClickDelete={() => handleDeleteComment(targetComment)}
-                    />
-                  )
-                )}
-              </div>
-              <div className="w-full flex flex-col gap-[16px] items-center">
-                {getCommentsByView(CommentView.PARTIAL_AGREE).map(
-                  (targetComment, index) => (
-                    <CommentCard
-                      onClickLike={() =>
-                        handleLikeChildComment(targetComment.id)
-                      }
-                      key={`partial-agree-comment-${index}`}
-                      comment={targetComment}
-                      onClickAddComment={() => {
-                        setTargetAddCommentId(targetComment.id);
-                        setAddCommentInCommentModalOpen(true);
-                      }}
-                      onClickEdit={() => {
-                        setTargetEditComment(targetComment);
-                        setEditCommentModalOpen(true);
-                      }}
-                      onClickDelete={() => handleDeleteComment(targetComment)}
-                    />
-                  )
-                )}
-              </div>
-              <div className="w-full flex flex-col gap-[16px] items-center">
-                {getCommentsByView(CommentView.DISAGREE).map(
-                  (targetComment, index) => (
-                    <CommentCard
-                      onClickLike={() =>
-                        handleLikeChildComment(targetComment.id)
-                      }
-                      key={`disagree-comment-${index}`}
-                      comment={targetComment}
-                      onClickAddComment={() => {
-                        setTargetAddCommentId(targetComment.id);
-                        setAddCommentInCommentModalOpen(true);
-                      }}
-                      onClickEdit={() => {
-                        setTargetEditComment(targetComment);
-                        setEditCommentModalOpen(true);
-                      }}
-                      onClickDelete={() => handleDeleteComment(targetComment)}
-                    />
-                  )
-                )}
+              <div className="grid grid-cols-1 md:grid-cols-3 mt-[32px] md:mt-[16px] pl-[32px] gap-[16px]">
+                <div className=" w-full flex flex-col gap-[16px] items-center">
+                  {getCommentsByView(CommentView.AGREE).map(
+                    (targetComment, index) => (
+                      <CommentCard
+                        onClickLike={() =>
+                          handleLikeChildComment(targetComment.id)
+                        }
+                        key={`agree-comment-${index}`}
+                        comment={targetComment}
+                        onClickAddComment={() => {
+                          setTargetAddCommentId(targetComment.id);
+                          setAddCommentInCommentModalOpen(true);
+                        }}
+                        onClickEdit={() => {
+                          setTargetEditComment(targetComment);
+                          setEditCommentModalOpen(true);
+                        }}
+                        onClickDelete={() => handleDeleteComment(targetComment)}
+                      />
+                    )
+                  )}
+                </div>
+                <div className="w-full flex flex-col gap-[16px] items-center">
+                  {getCommentsByView(CommentView.PARTIAL_AGREE).map(
+                    (targetComment, index) => (
+                      <CommentCard
+                        onClickLike={() =>
+                          handleLikeChildComment(targetComment.id)
+                        }
+                        key={`partial-agree-comment-${index}`}
+                        comment={targetComment}
+                        onClickAddComment={() => {
+                          setTargetAddCommentId(targetComment.id);
+                          setAddCommentInCommentModalOpen(true);
+                        }}
+                        onClickEdit={() => {
+                          setTargetEditComment(targetComment);
+                          setEditCommentModalOpen(true);
+                        }}
+                        onClickDelete={() => handleDeleteComment(targetComment)}
+                      />
+                    )
+                  )}
+                </div>
+                <div className="w-full flex flex-col gap-[16px] items-center">
+                  {getCommentsByView(CommentView.DISAGREE).map(
+                    (targetComment, index) => (
+                      <CommentCard
+                        onClickLike={() =>
+                          handleLikeChildComment(targetComment.id)
+                        }
+                        key={`disagree-comment-${index}`}
+                        comment={targetComment}
+                        onClickAddComment={() => {
+                          setTargetAddCommentId(targetComment.id);
+                          setAddCommentInCommentModalOpen(true);
+                        }}
+                        onClickEdit={() => {
+                          setTargetEditComment(targetComment);
+                          setEditCommentModalOpen(true);
+                        }}
+                        onClickDelete={() => handleDeleteComment(targetComment)}
+                      />
+                    )
+                  )}
+                </div>
               </div>
             </div>
           </section>

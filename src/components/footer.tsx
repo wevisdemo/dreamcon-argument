@@ -2,10 +2,10 @@ import { ReactElement } from "react";
 
 export default function Footer(): ReactElement<any> {
   return (
-    <div className="flex flex-col max-w-[960px] w-full m-auto text-white text-[16px] space-y-[48px]">
-      <div className="flex md:flex-row flex-col md:justify-between items-center">
+    <div className="flex flex-col max-w-[960px] w-full m-auto text-white text-[16px] space-y-[48px] text-left">
+      <div className="flex md:flex-row flex-col md:justify-between md:items-center space-y-[32px]">
         <img
-          className="h-[48px]"
+          className="h-[48px] w-fit"
           src="/dream-con-logo-white.svg"
           alt="dream-con-logo-white"
         />
@@ -15,8 +15,8 @@ export default function Footer(): ReactElement<any> {
           </a>
         </div>
       </div>
-      <div className="flex justify-between">
-        <div className="flex flex-col justify-between">
+      <div className="flex flex-col md:flex-row justify-between space-y-[32px]">
+        <div className="flex flex-col md:justify-between space-y-[8px]">
           <span className="wv-ibmplex wv-bold">ติดต่อสอบถาม</span>
           <a className="underline" href="mailto: contact@wevis.info">
             contact@wevis.info
@@ -24,21 +24,29 @@ export default function Footer(): ReactElement<any> {
         </div>
         <div className="flex flex-col justify-between">
           <span className="wv-ibmplex wv-bold">จัดทำโครงการโดย</span>
-          <div className="flex md:flex-row flex-col space-x-[16px]">
-            <img className="h-[32px]" src="/wevis-logo.svg" alt="wevis-logo" />
-            <img className="h-[32px]" src="/fnf-logo.svg" alt="fnf-logo" />
-            <img
-              className="h-[32px]"
-              src="/the-active-logo.svg"
-              alt="the-active-logo"
-            />
-            <img
-              className="h-[32px]"
-              src="/101pub-logo.svg"
-              alt="101pub-logo"
-            />
-            <img className="h-[32px]" src="/hand-logo.svg" alt="hand-logo" />
-            <img className="h-[32px]" src="/tij-logo.svg" alt="tij-logo" />
+          <div className="flex space-x-[16px]">
+            <div className="flex md:flex-row flex-col space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
+              <img
+                className="h-[32px]"
+                src="/wevis-logo.svg"
+                alt="wevis-logo"
+              />
+              <img className="h-[32px]" src="/fnf-logo.svg" alt="fnf-logo" />
+              <img
+                className="h-[32px]"
+                src="/the-active-logo.svg"
+                alt="the-active-logo"
+              />
+            </div>
+            <div className="flex md:flex-row flex-col space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
+              <img
+                className="h-[32px]"
+                src="/101pub-logo.svg"
+                alt="101pub-logo"
+              />
+              <img className="h-[32px]" src="/hand-logo.svg" alt="hand-logo" />
+              <img className="h-[32px]" src="/tij-logo.svg" alt="tij-logo" />
+            </div>
           </div>
         </div>
       </div>

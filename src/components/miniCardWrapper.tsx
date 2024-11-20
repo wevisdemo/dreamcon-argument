@@ -41,7 +41,7 @@ export default function MiniCardWrapper({
   return (
     <div className="flex flex-col space-y-[24px]">
       <h2 className="wv-ibmplex wv-bold text-[40px]">สำรวจข้อถกเถียง</h2>
-      <div className="flex w-full items-end	">
+      <div className="flex md:flex-row flex-col w-full md:items-end md:space-x-[16px] space-y-[16px]">
         <input
           value={search}
           style={{ backgroundImage: "url('/search-icon.svg')" }}
@@ -50,7 +50,7 @@ export default function MiniCardWrapper({
           onChange={(e) => setSearch(e.target.value)}
           placeholder="ค้นหาคำที่เกี่ยวข้อง"
         />
-        <div className="w-full flex flex-col ml-[16px] text-[13px] max-w-[310px]">
+        <div className="w-full flex flex-col text-[13px] max-w-[310px]">
           <span className="wv-bold">เรียงตามการมีส่วนร่วม</span>
           <div className="flex w-full h-[40px] mt-[4px]">
             <button
@@ -90,12 +90,12 @@ export default function MiniCardWrapper({
           />
         ))}
       </div>
-      <a
+      {/* <a
         className="wv-ibmplex wv-bold text-[#1C4CD3] underline text-[16px] leading-[20px] w-fit m-auto"
         href="/"
       >
         สำรวจเพิ่ม...
-      </a>
+      </a> */}
       <button
         onClick={onClickAddRoom}
         className="flex m-auto w-fit py-[10px] px-[54px] items-center justify-center border-solid border-[2px] rounded-[48px] border-[#E8E8E8] bg-[#2579F5]"

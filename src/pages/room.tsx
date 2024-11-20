@@ -8,7 +8,6 @@ import {
   ref,
   onValue,
   set,
-  push,
   get,
   increment,
   update,
@@ -167,53 +166,37 @@ export default function RoomPage(): ReactElement<any> {
   };
 
   return room !== null ? (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-[#F8F8F8]">
       {room != null && <div></div>}
-      <section id="hero" className="px-[24px] md:px-[160px] bg-[#BDE6FF]">
-        <Hero navigateLink="/" textNavigate="< ข้อถกเถียงทั้งหมด" />
+      <section id="hero" className="px-[24px] md:px-[0px] bg-[#BDE6FF]">
+        <div className="max-w-[960px] w-full m-auto">
+          <Hero navigateLink="/" textNavigate="< ข้อถกเถียงทั้งหมด" />
+        </div>
       </section>
       <section
         id="info"
-        className="px-[24px] md:px-[160px] py-[24px] md:py-[48px]"
+        className="px-[24px] md:px-[0px] py-[24px] md:py-[48px]"
       >
-        <TitleCard
-          room={room}
-          onClickAddComment={() => {
-            setAddCommentModalOpen(true);
-          }}
-          onClickDelete={() => {
-            handleDeleteRoom(room);
-          }}
-          onClickEdit={() => {
-            setIsEditRoomModalOpen(true);
-          }}
-        />
-        {room.comments && (
-          <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px]">
-            <div className=" w-full flex flex-col gap-[16px] items-center">
-              {getCommentsByView(CommentView.AGREE).map((comment, index) => (
-                <CommentCard
-                  onClickLike={() => handleLikeComment(comment.id)}
-                  key={`agree-comment-${index}`}
-                  comment={comment}
-                  onClickAddComment={() => {
-                    setTargetCommentId(comment.id);
-                    setAddCommentInCommentModalOpen(true);
-                  }}
-                  onClickEdit={() => {
-                    setTargetCommentId(comment.id);
-                    setIsEditCommentModalOpen(true);
-                  }}
-                  onClickDelete={() => handleDeleteComment(comment)}
-                />
-              ))}
-            </div>
-            <div className="w-full flex flex-col gap-[16px] items-center">
-              {getCommentsByView(CommentView.PARTIAL_AGREE).map(
-                (comment, index) => (
+        <div className="max-w-[960px] w-full m-auto">
+          <TitleCard
+            room={room}
+            onClickAddComment={() => {
+              setAddCommentModalOpen(true);
+            }}
+            onClickDelete={() => {
+              handleDeleteRoom(room);
+            }}
+            onClickEdit={() => {
+              setIsEditRoomModalOpen(true);
+            }}
+          />
+          {room.comments && (
+            <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px] gap-[16px]">
+              <div className=" w-full flex flex-col gap-[16px] items-center">
+                {getCommentsByView(CommentView.AGREE).map((comment, index) => (
                   <CommentCard
                     onClickLike={() => handleLikeComment(comment.id)}
-                    key={`partial-agree-comment-${index}`}
+                    key={`agree-comment-${index}`}
                     comment={comment}
                     onClickAddComment={() => {
                       setTargetCommentId(comment.id);
@@ -225,29 +208,51 @@ export default function RoomPage(): ReactElement<any> {
                     }}
                     onClickDelete={() => handleDeleteComment(comment)}
                   />
-                )
-              )}
+                ))}
+              </div>
+              <div className="w-full flex flex-col gap-[16px] items-center">
+                {getCommentsByView(CommentView.PARTIAL_AGREE).map(
+                  (comment, index) => (
+                    <CommentCard
+                      onClickLike={() => handleLikeComment(comment.id)}
+                      key={`partial-agree-comment-${index}`}
+                      comment={comment}
+                      onClickAddComment={() => {
+                        setTargetCommentId(comment.id);
+                        setAddCommentInCommentModalOpen(true);
+                      }}
+                      onClickEdit={() => {
+                        setTargetCommentId(comment.id);
+                        setIsEditCommentModalOpen(true);
+                      }}
+                      onClickDelete={() => handleDeleteComment(comment)}
+                    />
+                  )
+                )}
+              </div>
+              <div className="w-full flex flex-col gap-[16px] items-center">
+                {getCommentsByView(CommentView.DISAGREE).map(
+                  (comment, index) => (
+                    <CommentCard
+                      onClickLike={() => handleLikeComment(comment.id)}
+                      key={`disagree-comment-${index}`}
+                      comment={comment}
+                      onClickAddComment={() => {
+                        setTargetCommentId(comment.id);
+                        setAddCommentInCommentModalOpen(true);
+                      }}
+                      onClickEdit={() => {
+                        setTargetCommentId(comment.id);
+                        setIsEditCommentModalOpen(true);
+                      }}
+                      onClickDelete={() => handleDeleteComment(comment)}
+                    />
+                  )
+                )}
+              </div>
             </div>
-            <div className="w-full flex flex-col gap-[16px] items-center">
-              {getCommentsByView(CommentView.DISAGREE).map((comment, index) => (
-                <CommentCard
-                  onClickLike={() => handleLikeComment(comment.id)}
-                  key={`disagree-comment-${index}`}
-                  comment={comment}
-                  onClickAddComment={() => {
-                    setTargetCommentId(comment.id);
-                    setAddCommentInCommentModalOpen(true);
-                  }}
-                  onClickEdit={() => {
-                    setTargetCommentId(comment.id);
-                    setIsEditCommentModalOpen(true);
-                  }}
-                  onClickDelete={() => handleDeleteComment(comment)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </section>
       {/* for edit */}
       <AddRoomModal

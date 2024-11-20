@@ -11,15 +11,15 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <main
-      className={`flex flex-col justify-between wv-ibmplexlooped text-[13px] min-h-screen`}
+      className={`flex flex-col justify-between wv-ibmplexlooped text-[13px] min-h-screen bg-[#F8F8F8]`}
     >
       <section>
-        <section className="sticky top-0">
+        <section className="sticky top-0 z-[20]">
           <Nav />
         </section>
         <App />
       </section>
-      <section className="bg-[#2579F5] py-[48px]">
+      <section className="bg-[#2579F5] py-[48px] px-[24px]">
         <Footer />
       </section>
     </main>

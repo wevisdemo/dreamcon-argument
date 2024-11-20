@@ -3,13 +3,7 @@ import { database, ref, onValue, set, push, get } from "../lib/firebase";
 import MiniCardWrapper from "../components/miniCardWrapper";
 import Hero from "../components/hero";
 import Description from "../components/description";
-import {
-  AddRoomPayload,
-  Room,
-  Comment,
-  CommentView,
-  AddCommentPayload,
-} from "../types/room";
+import { AddRoomPayload, Room, AddCommentPayload } from "../types/room";
 import AddRoomModal from "../components/addRoomModal";
 import AddCommentModal from "../components/addCommentModal";
 import {
@@ -18,11 +12,9 @@ import {
   HandleEditRoom,
 } from "../util/room";
 import { ConvertRoom } from "../util/converter";
-import { RoomSortOption } from "../types/app";
 
 export default function Home() {
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [filter, setFilter] = useState<RoomSortOption>(RoomSortOption.LATEST);
 
   const convertRooms = async (data: any): Promise<Room[]> => {
     const rooms: Room[] = [];
@@ -111,7 +103,7 @@ export default function Home() {
       </section>
       <section
         id="mini-card"
-        className="px-[24px] md:px-[160px]  py-[32px] md:py-[64px]"
+        className="px-[24px] md:px-[160px]  py-[32px] md:py-[64px] bg-[#F8F8F8]"
       >
         <MiniCardWrapper
           rooms={rooms}
@@ -124,12 +116,37 @@ export default function Home() {
           onClickDeleteRoom={(room) => HandleDeleteRoom(room)}
         />
       </section>
-      <div className="bg-[#FFFFFF] h-[40px] flex relative">
+      <div className="bg-[#FFFFFF] h-[40px] flex relative pb-[24px]">
         <div
           style={{ backgroundImage: "url('/ellipse-2.svg')" }}
           className="bg-repeat w-full h-[16px] absolute top-[-2px]"
         />
       </div>
+      <section className="py-[48px]">
+        <div className="flex justify-between max-w-[960px] w-full m-auto space-x-[24px]">
+          <div className="flex flex-col w-[50%]">
+            <span className="text-[#1C4CD3] text-[16px] wv-bold">
+              จะเกิดอะไรขึ้นต่อไป
+            </span>
+            <span className="text-[16px]">
+              หากคุณอยากรู้ความคืบหน้าของโครงการว่าไปถึงไหน
+              เราจะคอยส่งข่าวให้คุณรู้!
+            </span>
+          </div>
+          <div className="flex w-[50%] items-start">
+            <input
+              className="w-full h-[40px] p-[16px] text-[13px] border-[1px] border-solid border-[#D4D4D4] rounded-[48px]"
+              type="text"
+              name="email-enter"
+              id="email-enter"
+              placeholder="ใส่อีเมลของคุณ"
+            />
+            <button className="flex mx-auto w-fit py-[10px] px-[54px] items-center justify-center border-solid border-[1px] rounded-[48px] border-[#E8E8E8] bg-[#2579F5] wv-ibmplex wv-bold text-[16px] leading-[20px] text-[#FFFFFF]">
+              ติดตาม
+            </button>
+          </div>
+        </div>
+      </section>
       {/* for add */}
       <AddRoomModal
         isOpen={isAddRoomModalOpen}

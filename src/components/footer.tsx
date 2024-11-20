@@ -26,26 +26,45 @@ export default function Footer(): ReactElement<any> {
           <span className="wv-ibmplex wv-bold">จัดทำโครงการโดย</span>
           <div className="flex space-x-[16px]">
             <div className="flex md:flex-row flex-col space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
-              <img
-                className="h-[32px]"
-                src="/wevis-logo.svg"
-                alt="wevis-logo"
-              />
-              <img className="h-[32px]" src="/fnf-logo.svg" alt="fnf-logo" />
-              <img
-                className="h-[32px]"
-                src="/the-active-logo.svg"
-                alt="the-active-logo"
-              />
+              <a target="_blank" href="https://wevis.info/">
+                <img
+                  className="h-[32px]"
+                  src="/wevis-logo.svg"
+                  alt="wevis-logo"
+                />
+              </a>
+              <a target="_blank" href="https://www.freiheit.org/thailand">
+                <img className="h-[32px]" src="/fnf-logo.svg" alt="fnf-logo" />
+              </a>
+
+              <a target="_blank" href="https://theactive.net/">
+                <img
+                  className="h-[32px]"
+                  src="/the-active-logo.svg"
+                  alt="the-active-logo"
+                />
+              </a>
             </div>
             <div className="flex md:flex-row flex-col space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
-              <img
-                className="h-[32px]"
-                src="/101pub-logo.svg"
-                alt="101pub-logo"
-              />
-              <img className="h-[32px]" src="/hand-logo.svg" alt="hand-logo" />
-              <img className="h-[32px]" src="/tij-logo.svg" alt="tij-logo" />
+              <a target="_blank" href="https://101pub.org/">
+                <img
+                  className="h-[32px]"
+                  src="/101pub-logo.svg"
+                  alt="101pub-logo"
+                />
+              </a>
+
+              <a target="_blank" href="https://hand.co.th/">
+                <img
+                  className="h-[32px]"
+                  src="/hand-logo.svg"
+                  alt="hand-logo"
+                />
+              </a>
+
+              <a target="_blank" href="https://www.tijthailand.org/">
+                <img className="h-[32px]" src="/tij-logo.svg" alt="tij-logo" />
+              </a>
             </div>
           </div>
         </div>

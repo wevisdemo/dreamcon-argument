@@ -32,6 +32,7 @@ import {
   HandleEditComment,
 } from "../util/comment";
 import { ConvertRoom, GetCommentWitChildren } from "../util/converter";
+import DeleteModal from "../components/deleteModal";
 
 export default function RoomPage(): ReactElement<any> {
   // const room = mockRoom; // TODO: change this to real data
@@ -131,6 +132,14 @@ export default function RoomPage(): ReactElement<any> {
 
   const [targetCommentId, setTargetCommentId] = useState<string>("");
 
+  const [isDeleteRoomModalOpen, setIsDeleteRoomModalOpen] = useState(false);
+  const [isDeleteCommentModalOpen, setIsDeleteCommentModalOpen] =
+    useState(false);
+  const [roomForDelete, setRoomForDelete] = useState<Room | null>(null);
+  const [commentForDelete, setCommentForDelete] = useState<Comment | null>(
+    null
+  );
+
   const handleAddCommentToRoom = async (
     roomId: string,
     payload: AddCommentPayload
@@ -148,10 +157,12 @@ export default function RoomPage(): ReactElement<any> {
 
   const handleDeleteComment = async (comment: Comment) => {
     await HandleDeleteComment(comment);
+    setCommentForDelete(null);
   };
 
   const handleDeleteRoom = async (room: Room) => {
     await HandleDeleteRoom(room);
+    setRoomForDelete(null);
     window.location.href = "/";
   };
 
@@ -184,7 +195,8 @@ export default function RoomPage(): ReactElement<any> {
               setAddCommentModalOpen(true);
             }}
             onClickDelete={() => {
-              handleDeleteRoom(room);
+              setRoomForDelete(room);
+              setIsDeleteRoomModalOpen(true);
             }}
             onClickEdit={() => {
               setIsEditRoomModalOpen(true);
@@ -206,7 +218,10 @@ export default function RoomPage(): ReactElement<any> {
                       setTargetCommentId(comment.id);
                       setIsEditCommentModalOpen(true);
                     }}
-                    onClickDelete={() => handleDeleteComment(comment)}
+                    onClickDelete={() => {
+                      setCommentForDelete(comment);
+                      setIsDeleteCommentModalOpen(true);
+                    }}
                   />
                 ))}
               </div>
@@ -225,7 +240,10 @@ export default function RoomPage(): ReactElement<any> {
                         setTargetCommentId(comment.id);
                         setIsEditCommentModalOpen(true);
                       }}
-                      onClickDelete={() => handleDeleteComment(comment)}
+                      onClickDelete={() => {
+                        setCommentForDelete(comment);
+                        setIsDeleteCommentModalOpen(true);
+                      }}
                     />
                   )
                 )}
@@ -245,7 +263,10 @@ export default function RoomPage(): ReactElement<any> {
                         setTargetCommentId(comment.id);
                         setIsEditCommentModalOpen(true);
                       }}
-                      onClickDelete={() => handleDeleteComment(comment)}
+                      onClickDelete={() => {
+                        setCommentForDelete(comment);
+                        setIsDeleteCommentModalOpen(true);
+                      }}
                     />
                   )
                 )}
@@ -296,6 +317,30 @@ export default function RoomPage(): ReactElement<any> {
         submitComment={(payload) => handleEditComment(targetCommentId, payload)}
         defaultState={getCommentById(targetCommentId)}
       ></AddCommentModal>
+      {/* Delete Room */}
+      <DeleteModal
+        isOpen={isDeleteRoomModalOpen}
+        onClose={() => {
+          setIsDeleteRoomModalOpen(false);
+        }}
+        onConfirm={() => {
+          if (roomForDelete) {
+            handleDeleteRoom(roomForDelete);
+          }
+        }}
+      />
+      {/* Delete Comment */}
+      <DeleteModal
+        isOpen={isDeleteCommentModalOpen}
+        onClose={() => {
+          setIsDeleteCommentModalOpen(false);
+        }}
+        onConfirm={() => {
+          if (commentForDelete) {
+            handleDeleteComment(commentForDelete);
+          }
+        }}
+      />
     </div>
   ) : (
     <div>404</div>

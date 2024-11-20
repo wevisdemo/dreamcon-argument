@@ -19,6 +19,7 @@ import {
   HandleDeleteComment,
   HandleEditComment,
 } from "../util/comment";
+import DeleteModal from "../components/deleteModal";
 
 interface MapComment {
   [id: string]: Comment;
@@ -39,6 +40,11 @@ export default function CommentPage() {
   const [editCommentModalOpen, setEditCommentModalOpen] =
     useState<boolean>(false);
   const [targetEditComment, setTargetEditComment] = useState<Comment | null>(
+    null
+  );
+  const [isDeleteCommentModalOpen, setIsDeleteCommentModalOpen] =
+    useState(false);
+  const [commentForDelete, setCommentForDelete] = useState<Comment | null>(
     null
   );
 
@@ -211,8 +217,17 @@ export default function CommentPage() {
     }
   };
 
-  const handleDeleteComment = async (comment: Comment) => {
-    HandleDeleteComment(comment);
+  const handleDeleteComment = async (targetComment: Comment) => {
+    const redirect =
+      targetComment.id === commentId ||
+      comment?.parent_comment_ids.includes(targetComment.id);
+
+    await HandleDeleteComment(targetComment);
+    setCommentForDelete(null);
+
+    if (redirect) {
+      window.location.href = "/";
+    }
   };
 
   const handleEditComment = async (
@@ -270,8 +285,8 @@ export default function CommentPage() {
                       setEditCommentModalOpen(true);
                     }}
                     onClickDelete={() => {
-                      handleDeleteComment(parentComment);
-                      window.location.href = "/";
+                      setCommentForDelete(parentComment);
+                      setIsDeleteCommentModalOpen(true);
                     }}
                   />
                 </div>
@@ -289,8 +304,8 @@ export default function CommentPage() {
                     setEditCommentModalOpen(true);
                   }}
                   onClickDelete={() => {
-                    handleDeleteComment(comment);
-                    window.location.href = "/";
+                    setCommentForDelete(comment);
+                    setIsDeleteCommentModalOpen(true);
                   }}
                 />
               </div>
@@ -313,9 +328,10 @@ export default function CommentPage() {
                             setTargetEditComment(targetComment);
                             setEditCommentModalOpen(true);
                           }}
-                          onClickDelete={() =>
-                            handleDeleteComment(targetComment)
-                          }
+                          onClickDelete={() => {
+                            setCommentForDelete(targetComment);
+                            setIsDeleteCommentModalOpen(true);
+                          }}
                         />
                       )
                     )}
@@ -337,9 +353,10 @@ export default function CommentPage() {
                             setTargetEditComment(targetComment);
                             setEditCommentModalOpen(true);
                           }}
-                          onClickDelete={() =>
-                            handleDeleteComment(targetComment)
-                          }
+                          onClickDelete={() => {
+                            setCommentForDelete(targetComment);
+                            setIsDeleteCommentModalOpen(true);
+                          }}
                         />
                       )
                     )}
@@ -361,9 +378,10 @@ export default function CommentPage() {
                             setTargetEditComment(targetComment);
                             setEditCommentModalOpen(true);
                           }}
-                          onClickDelete={() =>
-                            handleDeleteComment(targetComment)
-                          }
+                          onClickDelete={() => {
+                            setCommentForDelete(targetComment);
+                            setIsDeleteCommentModalOpen(true);
+                          }}
                         />
                       )
                     )}
@@ -416,6 +434,18 @@ export default function CommentPage() {
             }
             defaultState={targetEditComment || undefined}
           ></AddCommentModal>
+          {/* Delete Comment */}
+          <DeleteModal
+            isOpen={isDeleteCommentModalOpen}
+            onClose={() => {
+              setIsDeleteCommentModalOpen(false);
+            }}
+            onConfirm={() => {
+              if (commentForDelete) {
+                handleDeleteComment(commentForDelete);
+              }
+            }}
+          />
         </div>
       ) : (
         <div>404</div>

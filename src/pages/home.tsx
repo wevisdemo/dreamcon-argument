@@ -12,6 +12,7 @@ import {
   HandleEditRoom,
 } from "../util/room";
 import { ConvertRoom } from "../util/converter";
+import DeleteModal from "../components/deleteModal";
 
 export default function Home() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -43,6 +44,8 @@ export default function Home() {
   const [isAddRoomModalOpen, setIsAddRoomModalOpen] = useState(false);
   const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
   const [isAddCommentModalOpen, setIsAddCommentModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [roomForDelete, setRoomForDelete] = useState<Room | null>(null);
   const [addCommentRoomId, setAddCommentRoomId] = useState<string>("");
   const [editRoomId, setEditRoomId] = useState<string>("");
 
@@ -71,6 +74,11 @@ export default function Home() {
     payload: AddCommentPayload
   ) => {
     await HandleAddCommentToRoom(roomId, payload);
+  };
+
+  const handleDeleteRoom = async (room: Room) => {
+    await HandleDeleteRoom(room);
+    setRoomForDelete(null);
   };
 
   const onClosedAddCommentModal = () => {
@@ -118,7 +126,10 @@ export default function Home() {
               setEditRoomId(roomId);
               setIsEditRoomModalOpen(true);
             }}
-            onClickDeleteRoom={(room) => HandleDeleteRoom(room)}
+            onClickDeleteRoom={(room) => {
+              setRoomForDelete(room);
+              setIsDeleteModalOpen(true);
+            }}
           />
         </div>
       </section>
@@ -177,6 +188,17 @@ export default function Home() {
         submitComment={(payload) =>
           handleAddCommentToRoom(addCommentRoomId, payload)
         }
+      />
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+        }}
+        onConfirm={() => {
+          if (roomForDelete) {
+            handleDeleteRoom(roomForDelete);
+          }
+        }}
       />
     </div>
   );

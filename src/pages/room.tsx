@@ -283,6 +283,7 @@ export default function RoomPage(): ReactElement<any> {
       </section>
       {/* for edit */}
       <AddRoomModal
+        isEdit
         isOpen={isEditRoomModalOpen}
         onClose={() => {
           setIsEditRoomModalOpen(false);
@@ -309,6 +310,7 @@ export default function RoomPage(): ReactElement<any> {
       ></AddCommentModal>
       {/* for edit comment */}
       <AddCommentModal
+        isEdit
         isOpen={isEditCommentModalOpen}
         onClose={() => {
           setIsEditCommentModalOpen(false);

@@ -172,6 +172,7 @@ export default function Home() {
       />
       {/* for edit */}
       <AddRoomModal
+        isEdit
         isOpen={isEditRoomModalOpen}
         onClose={() => {
           setIsEditRoomModalOpen(false);

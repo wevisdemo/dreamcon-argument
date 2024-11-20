@@ -51,13 +51,13 @@ export default function MiniCardWrapper({
             onChange={(e) => setSearch(e.target.value)}
             placeholder="ค้นหาคำที่เกี่ยวข้อง"
           />
-          <span
+          <img
+            src="/close-icon.svg"
+            alt="close-icon"
             className="wv-ibmplex wv-bold absolute top-[8px] right-[40px] p-[4px] hover:cursor-pointer"
             style={{ display: search.length > 0 ? "block" : "none" }}
             onClick={() => setSearch("")}
-          >
-            X
-          </span>
+          />
         </div>
         <div className="w-full flex flex-col text-[13px] max-w-[310px]">
           <span className="wv-bold">เรียงตามการมีส่วนร่วม</span>

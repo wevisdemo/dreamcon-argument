@@ -2,6 +2,7 @@ import { AddRoomPayload, Room } from "../types/room";
 import React, { useEffect } from "react";
 
 interface ModalProps {
+  isEdit?: boolean;
   isOpen: boolean;
   onClose: () => void;
   onAddRoom: (payload: AddRoomPayload) => void;
@@ -9,6 +10,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({
+  isEdit,
   isOpen,
   onClose,
   onAddRoom,
@@ -51,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
       <div className="w-full h-full md:h-[480px] md:max-w-[480px] bg-white md:rounded-lg shadow-lg">
         <div className="flex justify-between px-[16px] py-[12px] border-solid border-b-[1px] border-[#D4D4D4]">
           <button
-            className="py-[10px] px-[16px] text-16 wv-ibmplex wv-bold "
+            className="py-[10px] px-[16px] pl-0 text-16 wv-ibmplex wv-bold "
             onClick={handleClose}
           >
             ยกเลิก
@@ -61,10 +63,11 @@ const Modal: React.FC<ModalProps> = ({
             onClick={onSubmit}
             disabled={text === ""}
           >
-            โพสต์
+            {isEdit ? "แก้ไข" : "โพสต์"}
           </button>
         </div>
         <div className="p-[16px] h-full">
+          <span className="text-[#6E6E6E]">{text.length}/140</span>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}

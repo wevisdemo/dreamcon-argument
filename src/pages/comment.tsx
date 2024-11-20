@@ -424,6 +424,7 @@ export default function CommentPage() {
             }
           ></AddCommentModal>
           <AddCommentModal
+            isEdit
             isOpen={editCommentModalOpen}
             onClose={() => {
               setTargetEditComment(null);

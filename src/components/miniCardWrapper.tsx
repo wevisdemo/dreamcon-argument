@@ -42,14 +42,23 @@ export default function MiniCardWrapper({
     <div className="flex flex-col space-y-[24px]">
       <h2 className="wv-ibmplex wv-bold text-[40px]">สำรวจข้อถกเถียง</h2>
       <div className="flex md:flex-row flex-col w-full md:items-end md:space-x-[16px] space-y-[16px]">
-        <input
-          value={search}
-          style={{ backgroundImage: "url('/search-icon.svg')" }}
-          className="w-full h-[40px] p-[16px] text-[13px] border-[1px] border-solid border-[#D4D4D4] rounded-[48px] bg-no-repeat bg-[center_right_1rem]"
-          type="text"
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="ค้นหาคำที่เกี่ยวข้อง"
-        />
+        <div className="w-full relative">
+          <input
+            value={search}
+            style={{ backgroundImage: "url('/search-icon.svg')" }}
+            className="w-full h-[40px] p-[16px] text-[13px] border-[1px] border-solid border-[#D4D4D4] rounded-[48px] bg-no-repeat bg-[center_right_1rem]"
+            type="text"
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="ค้นหาคำที่เกี่ยวข้อง"
+          />
+          <span
+            className="wv-ibmplex wv-bold absolute top-[8px] right-[40px] p-[4px] hover:cursor-pointer"
+            style={{ display: search.length > 0 ? "block" : "none" }}
+            onClick={() => setSearch("")}
+          >
+            X
+          </span>
+        </div>
         <div className="w-full flex flex-col text-[13px] max-w-[310px]">
           <span className="wv-bold">เรียงตามการมีส่วนร่วม</span>
           <div className="flex w-full h-[40px] mt-[4px]">
@@ -79,17 +88,26 @@ export default function MiniCardWrapper({
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px] w-fit m-auto">
-        {displayRooms().map((room) => (
-          <MiniCard
-            key={room.id}
-            room={room}
-            onClickAddComment={onClickAddComment}
-            onClickEdit={() => onClickEditRoom(room.id)}
-            onClickDelete={() => onClickDeleteRoom(room)}
-          />
-        ))}
-      </div>
+      {displayRooms().length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px] w-fit m-auto">
+          {displayRooms().map((room) => (
+            <MiniCard
+              key={room.id}
+              room={room}
+              onClickAddComment={onClickAddComment}
+              onClickEdit={() => onClickEditRoom(room.id)}
+              onClickDelete={() => onClickDeleteRoom(room)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center w-full h-[200px]">
+          <span className="wv-ibmplex wv-bold text-[16px] leading-[20px] mt-[16px]">
+            ไม่มีข้อมูล
+          </span>
+        </div>
+      )}
+
       {/* <a
         className="wv-ibmplex wv-bold text-[#1C4CD3] underline text-[16px] leading-[20px] w-fit m-auto"
         href="/"

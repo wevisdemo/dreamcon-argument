@@ -190,7 +190,7 @@ export default function RoomPage(): ReactElement<any> {
               setIsEditRoomModalOpen(true);
             }}
           />
-          {room.comments && (
+          {room.comments.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px] gap-[16px]">
               <div className=" w-full flex flex-col gap-[16px] items-center">
                 {getCommentsByView(CommentView.AGREE).map((comment, index) => (
@@ -250,6 +250,12 @@ export default function RoomPage(): ReactElement<any> {
                   )
                 )}
               </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center w-full h-[200px]">
+              <span className="wv-ibmplex wv-bold text-[16px] leading-[20px] mt-[16px]">
+                ไม่มีความคิดเห็น
+              </span>
             </div>
           )}
         </div>

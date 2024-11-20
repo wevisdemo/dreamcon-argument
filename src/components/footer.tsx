@@ -3,19 +3,14 @@ import { ReactElement } from "react";
 export default function Footer(): ReactElement<any> {
   return (
     <div className="flex flex-col max-w-[960px] w-full m-auto text-white text-[16px] space-y-[48px] text-left">
-      <div className="flex md:flex-row flex-col md:justify-between md:items-center space-y-[32px]">
+      <div className="flex md:flex-row flex-col md:justify-between md:items-center space-y-[32px] ">
         <img
           className="h-[48px] w-fit"
           src="/dream-con-logo-white.svg"
           alt="dream-con-logo-white"
         />
-        <div>
-          <a className="wv-ibmplex wv-bold underline" href="/">
-            ร่วมถกเถียง
-          </a>
-        </div>
       </div>
-      <div className="flex flex-col md:flex-row justify-between space-y-[32px]">
+      <div className="flex flex-col md:flex-row justify-between space-y-[32px] md:space-y-0">
         <div className="flex flex-col md:justify-between space-y-[8px]">
           <span className="wv-ibmplex wv-bold">ติดต่อสอบถาม</span>
           <a className="underline" href="mailto: contact@wevis.info">

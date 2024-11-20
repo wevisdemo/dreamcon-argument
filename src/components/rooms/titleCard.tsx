@@ -39,7 +39,7 @@ export default function MiniCard({
       </div>
       <h5 className="wv-ibmplex wv-bold text-[24px]">{room.title}</h5>
       <div className="flex flex-col md:flex-row justify-center items-center md:justify-between space-y-[16px] md:space-y-0 ">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between md:justify-start w-full md:flex-1">
           <div className="flex ">
             <div className="flex w-[16px] h-[16px] bg-[#6AB193] rounded-[8px] text-[13px] items-center justify-center text-[#ffffff] leading-0">
               <span>{getCommentCountByView(CommentView.AGREE)}</span>
@@ -63,7 +63,7 @@ export default function MiniCard({
         </div>
         <button
           onClick={onClickAddComment}
-          className="flex py-[10px] px-[24px] items-center justify-center w-fit border-solid border-[2px] rounded-[48px] border-[#E8E8E8]"
+          className="w-full md:w-auto flex py-[10px] px-[24px] items-center justify-center w-fit border-solid border-[2px] rounded-[48px] border-[#E8E8E8]"
         >
           <img src="/comment-icon.svg" alt="icon-add-comment" />
           <span className="wv-ibmplex wv-bold text-[16px] leading-[20px] ml-[8px]">

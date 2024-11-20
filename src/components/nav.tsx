@@ -9,7 +9,7 @@ export default function Nav(): ReactElement<any> {
       </a>
       <div>
         <button className="text-[16px] bg-[#BDE6FF] py-[22px] px-[16px] wv-ibmplex wv-bold">
-          ข้อถกเถียง
+          ร่วมถกเถียง
         </button>
       </div>
     </div>

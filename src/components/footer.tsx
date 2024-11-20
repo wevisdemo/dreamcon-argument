@@ -24,7 +24,7 @@ export default function Footer(): ReactElement<any> {
         </div>
         <div className="flex flex-col justify-between">
           <span className="wv-ibmplex wv-bold">จัดทำโครงการโดย</span>
-          <div className="flex space-x-[16px]">
+          <div className="flex space-x-[16px] justify-between">
             <div className="flex md:flex-row flex-col space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
               <a target="_blank" href="https://wevis.info/">
                 <img

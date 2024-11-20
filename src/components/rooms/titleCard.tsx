@@ -17,9 +17,9 @@ export default function MiniCard({
   };
   return (
     <div className="w-full flex flex-col space-y-[16px] p-[16px] md:p-[24px] bg-[#FFFFFF] drop-shadow-md rounded-[8px]">
-      <div className="flex justify-end space-x-[24px]">
+      <div className="flex justify-end md:space-x-[24px]">
         <div className="flex space-x-[8px] items-center">
-          <span>แก้ไข</span>
+          <span className="hidden md:block">แก้ไข</span>
           <img
             src="/pen-icon.svg"
             alt="pen-icon"
@@ -28,7 +28,7 @@ export default function MiniCard({
           />
         </div>
         <div className="flex space-x-[8px] items-center text-[#CB3535]">
-          <span>ลบ</span>
+          <span className="hidden md:block">ลบ</span>
           <img
             src="/bin-icon.svg"
             alt="bin-icon"

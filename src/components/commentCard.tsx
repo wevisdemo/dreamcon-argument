@@ -54,37 +54,40 @@ export default function CommentCard({
             fullWidth ? "max-w-full" : "max-w-[232px]"
           } flex flex-col gap-[8px] p-[16px]`}
         >
-          <div className="flex justify-end space-x-[8px]">
-            <img
-              src="/pen-icon.svg"
-              alt="pen-icon"
-              className="w-[24px] hover:cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                onClickEdit();
-              }}
-            />
-            <img
-              src="/bin-icon.svg"
-              alt="bin-icon"
-              className="w-[24px] hover:cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                onClickDelete();
-              }}
-            />
+          <div className="flex justify-between items-center">
+            <span className="flex items-center">
+              <h5
+                className={`wv-ibmplex wv-bold text-[16px] `}
+                style={{ color: getColor(comment.comment_view) }}
+              >
+                {comment.comment_view}
+              </h5>
+              <span className="ml-[8px] text-[13px]">เพราะ...</span>
+            </span>
+            <div className="flex justify-end space-x-[8px]">
+              <img
+                src="/pen-icon.svg"
+                alt="pen-icon"
+                className="w-[24px] hover:cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  onClickEdit();
+                }}
+              />
+              <img
+                src="/bin-icon.svg"
+                alt="bin-icon"
+                className="w-[24px] hover:cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  onClickDelete();
+                }}
+              />
+            </div>
           </div>
-          <span className="flex items-center">
-            <h5
-              className={`wv-ibmplex wv-bold text-[16px] `}
-              style={{ color: getColor(comment.comment_view) }}
-            >
-              {comment.comment_view}
-            </h5>
-            <span className="ml-[8px] text-[13px]">เพราะ...</span>
-          </span>
+
           <p className="text-[13px]">{comment.reason}</p>
           <div className="flex justify-between">
             <div className="flex space-x-[8px] items-center">

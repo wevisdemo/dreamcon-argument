@@ -51,7 +51,7 @@ export default function CommentCard({
         <div className={`w-[8px] bg-[${getColor(comment.comment_view)}]`} />
         <div
           className={`rounded-r-[8px] bg-[#FFFFFF] drop-shadow-md w-full ${
-            fullWidth ? "max-w-full" : "max-w-[232px]"
+            fullWidth ? "max-w-full" : "max-w-[255px]"
           } flex flex-col gap-[8px] p-[16px]`}
         >
           <div className="flex justify-between items-center">

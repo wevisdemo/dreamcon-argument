@@ -189,85 +189,102 @@ export default function RoomPage(): ReactElement<any> {
         className="px-[24px] md:px-[0px] py-[24px] md:py-[48px]"
       >
         <div className="max-w-[960px] w-full m-auto">
-          <TitleCard
-            room={room}
-            onClickAddComment={() => {
-              setAddCommentModalOpen(true);
-            }}
-            onClickDelete={() => {
-              setRoomForDelete(room);
-              setIsDeleteRoomModalOpen(true);
-            }}
-            onClickEdit={() => {
-              setIsEditRoomModalOpen(true);
-            }}
-          />
+          <div className="relative z-10">
+            <TitleCard
+              room={room}
+              onClickAddComment={() => {
+                setAddCommentModalOpen(true);
+              }}
+              onClickDelete={() => {
+                setRoomForDelete(room);
+                setIsDeleteRoomModalOpen(true);
+              }}
+              onClickEdit={() => {
+                setIsEditRoomModalOpen(true);
+              }}
+            />
+          </div>
           {room.comments.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 mt-[16px] gap-[16px]">
-              <div className=" w-full flex flex-col gap-[16px] items-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 pt-[16px] gap-[16px] overflow-hidden">
+              <div className=" w-full flex flex-col gap-[16px] items-center md:items-end">
                 {getCommentsByView(CommentView.AGREE).map((comment, index) => (
-                  <CommentCard
-                    onClickLike={() => handleLikeComment(comment.id)}
-                    key={`agree-comment-${index}`}
-                    comment={comment}
-                    onClickAddComment={() => {
-                      setTargetCommentId(comment.id);
-                      setAddCommentInCommentModalOpen(true);
-                    }}
-                    onClickEdit={() => {
-                      setTargetCommentId(comment.id);
-                      setIsEditCommentModalOpen(true);
-                    }}
-                    onClickDelete={() => {
-                      setCommentForDelete(comment);
-                      setIsDeleteCommentModalOpen(true);
-                    }}
-                  />
+                  <div className="relative w-full max-w-[263px]">
+                    <div className="left-[-24px] top-[-150%] absolute h-[200%] w-[50%] border-l-[2px] border-b-[2px] border-solid border-[#D4D4D4]" />
+                    <div className="relative z-10">
+                      <CommentCard
+                        onClickLike={() => handleLikeComment(comment.id)}
+                        key={`agree-comment-${index}`}
+                        comment={comment}
+                        onClickAddComment={() => {
+                          setTargetCommentId(comment.id);
+                          setAddCommentInCommentModalOpen(true);
+                        }}
+                        onClickEdit={() => {
+                          setTargetCommentId(comment.id);
+                          setIsEditCommentModalOpen(true);
+                        }}
+                        onClickDelete={() => {
+                          setCommentForDelete(comment);
+                          setIsDeleteCommentModalOpen(true);
+                        }}
+                      />
+                    </div>
+                  </div>
                 ))}
               </div>
-              <div className="w-full flex flex-col gap-[16px] items-center">
+              <div className=" w-full flex flex-col gap-[16px] items-center md:items-end">
                 {getCommentsByView(CommentView.PARTIAL_AGREE).map(
                   (comment, index) => (
-                    <CommentCard
-                      onClickLike={() => handleLikeComment(comment.id)}
-                      key={`partial-agree-comment-${index}`}
-                      comment={comment}
-                      onClickAddComment={() => {
-                        setTargetCommentId(comment.id);
-                        setAddCommentInCommentModalOpen(true);
-                      }}
-                      onClickEdit={() => {
-                        setTargetCommentId(comment.id);
-                        setIsEditCommentModalOpen(true);
-                      }}
-                      onClickDelete={() => {
-                        setCommentForDelete(comment);
-                        setIsDeleteCommentModalOpen(true);
-                      }}
-                    />
+                    <div className="relative w-full max-w-[263px]">
+                      <div className="left-[-24px] top-[-150%] absolute h-[200%] w-[50%] border-l-[2px] border-b-[2px] border-solid border-[#D4D4D4]" />
+                      <div className="relative z-10">
+                        <CommentCard
+                          onClickLike={() => handleLikeComment(comment.id)}
+                          key={`partial-agree-comment-${index}`}
+                          comment={comment}
+                          onClickAddComment={() => {
+                            setTargetCommentId(comment.id);
+                            setAddCommentInCommentModalOpen(true);
+                          }}
+                          onClickEdit={() => {
+                            setTargetCommentId(comment.id);
+                            setIsEditCommentModalOpen(true);
+                          }}
+                          onClickDelete={() => {
+                            setCommentForDelete(comment);
+                            setIsDeleteCommentModalOpen(true);
+                          }}
+                        />
+                      </div>
+                    </div>
                   )
                 )}
               </div>
-              <div className="w-full flex flex-col gap-[16px] items-center">
+              <div className="w-full flex flex-col gap-[16px] items-center md:items-end">
                 {getCommentsByView(CommentView.DISAGREE).map(
                   (comment, index) => (
-                    <CommentCard
-                      onClickLike={() => handleLikeComment(comment.id)}
-                      key={`disagree-comment-${index}`}
-                      comment={comment}
-                      onClickAddComment={() => {
-                        setTargetCommentId(comment.id);
-                        setAddCommentInCommentModalOpen(true);
-                      }}
-                      onClickEdit={() => {
-                        setTargetCommentId(comment.id);
-                        setIsEditCommentModalOpen(true);
-                      }}
-                      onClickDelete={() => {
-                        setCommentForDelete(comment);
-                        setIsDeleteCommentModalOpen(true);
-                      }}
-                    />
+                    <div className="relative w-full max-w-[263px]">
+                      <div className="left-[-24px] top-[-150%] absolute h-[200%] w-[50%] border-l-[2px] border-b-[2px] border-solid border-[#D4D4D4]" />
+                      <div className="relative z-10">
+                        <CommentCard
+                          onClickLike={() => handleLikeComment(comment.id)}
+                          key={`disagree-comment-${index}`}
+                          comment={comment}
+                          onClickAddComment={() => {
+                            setTargetCommentId(comment.id);
+                            setAddCommentInCommentModalOpen(true);
+                          }}
+                          onClickEdit={() => {
+                            setTargetCommentId(comment.id);
+                            setIsEditCommentModalOpen(true);
+                          }}
+                          onClickDelete={() => {
+                            setCommentForDelete(comment);
+                            setIsDeleteCommentModalOpen(true);
+                          }}
+                        />
+                      </div>
+                    </div>
                   )
                 )}
               </div>

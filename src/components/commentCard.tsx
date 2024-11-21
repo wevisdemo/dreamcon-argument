@@ -47,7 +47,7 @@ export default function CommentCard({
 
   return (
     <a href={`/comments/${comment.id}`} className=" w-full">
-      <div className="flex justify-center w-full">
+      <div className="w-full flex justify-center w-full">
         <div className={`w-[8px] bg-[${getColor(comment.comment_view)}]`} />
         <div
           className={`rounded-r-[8px] bg-[#FFFFFF] drop-shadow-md w-full ${

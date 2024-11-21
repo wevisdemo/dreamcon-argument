@@ -247,7 +247,7 @@ export default function CommentPage() {
           {comment != null && room != null ? <div /> : <div>Loading...</div>}
           <section
             id="header"
-            className="px-[16px] md:px-[160px] py-[8px] md:py-[16px] bg-[#BDE6FF]"
+            className="px-[16px] py-[8px] md:py-[16px] bg-[#BDE6FF]"
           >
             <div className="max-w-[960px] w-full m-auto">
               <a
@@ -258,14 +258,14 @@ export default function CommentPage() {
               </a>
             </div>
           </section>
-          <section className="md:px-[160px]">
+          <section className="px-[16px]">
             <div className="max-w-[960px] w-full m-auto">
               <h4 className="wv-ibmplex wv-bold text-[16px] md:text-[25px] bg-[#FFFFFF] rounded-b-[8px] drop-shadow-md p-[16px] md:p-[24px]">
                 {room?.title}
               </h4>
             </div>
           </section>
-          <section className="md:px-[160px] p-[24px] pt-0">
+          <section className="p-[24px] pt-0">
             <div className="max-w-[960px] w-full m-auto">
               {parentComments().map((parentComment) => (
                 <div
@@ -310,7 +310,7 @@ export default function CommentPage() {
                 />
               </div>
               {comment.comments.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 pt-[32px] md:pt-[16px] pl-[32px] gap-[16px] overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-3 pt-[32px] md:pt-[16px] pl-[32px] gap-[16px] md:gap-[32px] overflow-hidden">
                   <div className=" w-full flex flex-col gap-[16px] items-center md:items-end">
                     {getCommentsByView(CommentView.AGREE).map(
                       (targetComment, index) => (

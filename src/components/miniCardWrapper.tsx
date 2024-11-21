@@ -89,7 +89,7 @@ export default function MiniCardWrapper({
         </div>
       </div>
       {displayRooms().length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px] w-fit m-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px] w-fit m-auto">
           {displayRooms().map((room) => (
             <MiniCard
               key={room.id}

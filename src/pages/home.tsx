@@ -93,7 +93,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <section id="hero" className="px-[24px] md:px-[0px] bg-[#BDE6FF]">
+      <section id="hero" className="px-[24px] bg-[#BDE6FF]">
         <div className="max-w-[960px] w-full m-auto">
           <Hero />
         </div>
@@ -107,7 +107,7 @@ export default function Home() {
 
       <section
         id="description"
-        className="px-[24px] md:px-[160px] py-[32px] md:py-[64px] bg-[#D2FED6]"
+        className="px-[24px] py-[32px] md:py-[64px] bg-[#D2FED6]"
       >
         <div className="max-w-[960px] w-full m-auto">
           <Description />
@@ -115,7 +115,7 @@ export default function Home() {
       </section>
       <section
         id="mini-card"
-        className="px-[24px] md:px-[160px]  py-[32px] md:py-[64px] bg-[#F8F8F8]"
+        className="px-[24px] py-[32px] md:py-[64px] bg-[#F8F8F8]"
       >
         <div className="max-w-[960px] w-full m-auto">
           <MiniCardWrapper

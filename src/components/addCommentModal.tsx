@@ -146,7 +146,7 @@ const Modal: React.FC<ModalProps> = ({
             </button>
           </div>
         </div>
-        <div className="p-[16px] h-full">
+        <div className="p-[16px] h-full flex flex-col">
           <span className="text-[#6E6E6E]">{text.length}/140</span>
           <textarea
             value={text}

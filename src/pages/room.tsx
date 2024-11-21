@@ -179,15 +179,12 @@ export default function RoomPage(): ReactElement<any> {
   return room !== null ? (
     <div className="flex flex-col bg-[#F8F8F8]">
       {room != null && <div></div>}
-      <section id="hero" className="px-[24px] md:px-[0px] bg-[#BDE6FF]">
+      <section id="hero" className="px-[24px] bg-[#BDE6FF]">
         <div className="max-w-[960px] w-full m-auto">
           <Hero navigateLink="/" textNavigate="< ข้อถกเถียงทั้งหมด" />
         </div>
       </section>
-      <section
-        id="info"
-        className="px-[24px] md:px-[0px] py-[24px] md:py-[48px]"
-      >
+      <section id="info" className="px-[24px] py-[24px] md:py-[48px]">
         <div className="max-w-[960px] w-full m-auto">
           <div className="relative z-10">
             <TitleCard
@@ -205,7 +202,7 @@ export default function RoomPage(): ReactElement<any> {
             />
           </div>
           {room.comments.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 pt-[16px] gap-[16px] overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-3 pt-[16px] gap-[16px] md:gap-[32px] overflow-hidden">
               <div className=" w-full flex flex-col gap-[16px] items-center md:items-end">
                 {getCommentsByView(CommentView.AGREE).map((comment, index) => (
                   <div className="relative w-full max-w-[263px]">

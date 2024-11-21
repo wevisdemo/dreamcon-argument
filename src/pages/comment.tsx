@@ -251,7 +251,7 @@ export default function CommentPage() {
           >
             <div className="max-w-[960px] w-full m-auto">
               <a
-                href="/"
+                href={`/rooms/${room?.id}`}
                 className="wv-ibmplex wv-semibold text-[#1C4CD3] underline "
               >
                 {"< ข้อถกเถียง"}

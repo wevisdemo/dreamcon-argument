@@ -20,7 +20,7 @@ export default function Footer(): ReactElement<any> {
         <div className="flex flex-col justify-between">
           <span className="wv-ibmplex wv-bold">จัดทำโครงการโดย</span>
           <div className="flex md:space-x-[16px] justify-between">
-            <div className="flex md:flex-row flex-col space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
+            <div className="flex md:flex-row flex-col md:space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
               <a target="_blank" href="https://wevis.info/">
                 <img
                   className="h-[32px]"
@@ -40,7 +40,7 @@ export default function Footer(): ReactElement<any> {
                 />
               </a>
             </div>
-            <div className="flex md:flex-row flex-col space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
+            <div className="flex md:flex-row flex-col md:space-x-[16px] space-y-[16px] md:space-y-0 md:items-center">
               <a target="_blank" href="https://101pub.org/">
                 <img
                   className="h-[32px]"

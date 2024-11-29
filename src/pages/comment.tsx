@@ -50,8 +50,6 @@ export default function CommentPage() {
 
   const commentId = id as string;
 
-  const x = new Date("2323");
-
   const parentComments = () => {
     const result = Object.values(mapParentComment);
     result.sort((a, b) => {

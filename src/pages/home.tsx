@@ -62,7 +62,11 @@ export default function Home() {
   };
 
   const handleEditRoom = async (payload: AddRoomPayload) => {
-    await HandleEditRoom(editRoomId, payload);
+    try {
+      await HandleEditRoom(editRoomId, payload);
+    } catch (e) {
+      console.error("Error editing room:", e);
+    }
   };
 
   const getRoomById = (roomId: string) => {
@@ -77,7 +81,11 @@ export default function Home() {
   };
 
   const handleDeleteRoom = async (room: Room) => {
-    await HandleDeleteRoom(room);
+    try {
+      await HandleDeleteRoom(room);
+    } catch (e) {
+      console.error("Error deleting room:", e);
+    }
     setRoomForDelete(null);
   };
 

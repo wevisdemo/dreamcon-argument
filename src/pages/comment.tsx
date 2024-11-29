@@ -50,8 +50,13 @@ export default function CommentPage() {
 
   const commentId = id as string;
 
+  const x = new Date("2323");
+
   const parentComments = () => {
     const result = Object.values(mapParentComment);
+    result.sort((a, b) => {
+      return new Date(a.created_at) < new Date(b.created_at) ? -1 : 1;
+    });
     return result;
   };
 
@@ -67,89 +72,103 @@ export default function CommentPage() {
   }, [comment]);
 
   const fetchComment = async () => {
-    const commentRef = ref(database, "comments/" + commentId);
-    await get(commentRef).then(async (snapshot) => {
-      if (snapshot.exists()) {
-        const convertedComment = await GetCommentWitChildren(commentId);
-        if (convertedComment == null) {
-          return;
+    try {
+      const commentRef = ref(database, "comments/" + commentId);
+      await get(commentRef).then(async (snapshot) => {
+        if (snapshot.exists()) {
+          const convertedComment = await GetCommentWitChildren(commentId);
+          if (convertedComment == null) {
+            return;
+          }
+          const commentsInComment = await Promise.all(
+            (convertedComment.comments || []).map(async (comment) => {
+              return await GetCommentWitChildren(comment.id);
+            })
+          );
+          const filteredCommentsInComment = commentsInComment.filter(
+            (c) => c != null
+          );
+          convertedComment.comments = filteredCommentsInComment as Comment[];
+          setComment(convertedComment);
         }
-        const commentsInComment = await Promise.all(
-          (convertedComment.comments || []).map(async (comment) => {
-            return await GetCommentWitChildren(comment.id);
-          })
-        );
-        const filteredCommentsInComment = commentsInComment.filter(
-          (c) => c != null
-        );
-        convertedComment.comments = filteredCommentsInComment as Comment[];
-        setComment(convertedComment);
-      }
-    });
+      });
+    } catch (e) {
+      console.error("Error fetching data:", e);
+    }
   };
 
   const fetchAndWatchComment = async () => {
-    const commentRef = ref(database, "comments/" + commentId);
-    onValue(commentRef, async (snapshot: any) => {
-      const commentData = snapshot.val();
-      if (commentData) {
-        const convertedComment = await GetCommentWitChildren(commentId);
-        if (convertedComment == null) {
-          return;
-        }
-        const commentsInComment = await Promise.all(
-          (convertedComment.comments || []).map(async (comment) => {
-            return await GetCommentWitChildren(comment.id);
-          })
-        );
-        const filteredCommentsInComment = commentsInComment.filter(
-          (c) => c != null
-        );
-        convertedComment.comments = filteredCommentsInComment as Comment[];
+    try {
+      const commentRef = ref(database, "comments/" + commentId);
+      onValue(commentRef, async (snapshot: any) => {
+        const commentData = snapshot.val();
+        if (commentData) {
+          const convertedComment = await GetCommentWitChildren(commentId);
+          if (convertedComment == null) {
+            return;
+          }
+          const commentsInComment = await Promise.all(
+            (convertedComment.comments || []).map(async (comment) => {
+              return await GetCommentWitChildren(comment.id);
+            })
+          );
+          const filteredCommentsInComment = commentsInComment.filter(
+            (c) => c != null
+          );
+          convertedComment.comments = filteredCommentsInComment as Comment[];
 
-        setComment(convertedComment);
-      }
-    });
+          setComment(convertedComment);
+        }
+      });
+    } catch (e) {
+      console.error("Error fetching data:", e);
+    }
   };
 
   const fetchAndWatchRoom = async () => {
     if (!comment) {
       return;
     }
-    const roomRef = ref(database, "rooms/" + comment.parent_room_id);
-    onValue(roomRef, async (snapshot: any) => {
-      const roomData = snapshot.val();
+    try {
+      const roomRef = ref(database, "rooms/" + comment.parent_room_id);
+      onValue(roomRef, async (snapshot: any) => {
+        const roomData = snapshot.val();
 
-      if (roomData) {
-        const convertedRoom = await ConvertRoom(
-          comment.parent_room_id,
-          roomData
-        );
-        setRoom(convertedRoom);
-      }
-    });
+        if (roomData) {
+          const convertedRoom = await ConvertRoom(
+            comment.parent_room_id,
+            roomData
+          );
+          setRoom(convertedRoom);
+        }
+      });
+    } catch (e) {
+      console.error("Error fetching data:", e);
+    }
   };
 
   const fetchAndWatchParentComments = async () => {
     if (!comment) {
       return;
     }
-    for (const id of comment.parent_comment_ids) {
-      const commentRef = ref(database, "comments/" + id);
-      onValue(commentRef, async (snapshot: any) => {
-        const comment = snapshot.val();
-        if (comment) {
-          const convertedComment = await GetCommentWitChildren(id);
-          if (convertedComment == null) {
-            return;
+    try {
+      for (const id of comment.parent_comment_ids) {
+        const commentRef = ref(database, "comments/" + id);
+        onValue(commentRef, async (snapshot: any) => {
+          const comment = snapshot.val();
+          if (comment) {
+            const convertedComment = await GetCommentWitChildren(id);
+            if (convertedComment != null) {
+              setMapParentComment((prev) => ({
+                ...prev,
+                [id]: convertedComment,
+              }));
+            }
           }
-
-          setMapParentComment((prev) => ({
-            ...prev,
-            [id]: convertedComment,
-          }));
-        }
-      });
+        });
+      }
+    } catch (e) {
+      console.error("Error fetching data:", e);
     }
   };
 
@@ -158,11 +177,15 @@ export default function CommentPage() {
   };
 
   const handleLikeChildComment = (targetCommentId: string) => {
-    const dbRef = ref(database);
-    const updates = {
-      [`comments/${targetCommentId}/like_count`]: increment(1),
-    };
-    update(dbRef, updates);
+    try {
+      const dbRef = ref(database);
+      const updates = {
+        [`comments/${targetCommentId}/like_count`]: increment(1),
+      };
+      update(dbRef, updates);
+    } catch (e) {
+      console.error("Error updating data:", e);
+    }
 
     fetchComment();
   };
@@ -171,11 +194,15 @@ export default function CommentPage() {
     if (!comment) {
       return;
     }
-    const dbRef = ref(database);
-    const updates = {
-      [`comments/${commentId}/like_count`]: increment(1),
-    };
-    update(dbRef, updates);
+    try {
+      const dbRef = ref(database);
+      const updates = {
+        [`comments/${commentId}/like_count`]: increment(1),
+      };
+      update(dbRef, updates);
+    } catch (e) {
+      console.error("Error updating data:", e);
+    }
   };
 
   const handleAddCommentToCurrentComment = async (
@@ -184,7 +211,11 @@ export default function CommentPage() {
     if (!comment) {
       return;
     }
-    await HandleAddCommentToComment(comment, payload);
+    try {
+      await HandleAddCommentToComment(comment, payload);
+    } catch (e) {
+      console.error("Error updating data:", e);
+    }
   };
 
   const handleAddCommentToParentComment = async (
@@ -193,7 +224,11 @@ export default function CommentPage() {
   ) => {
     const targetComment = mapParentComment[targetCommentId];
     if (targetComment) {
-      await HandleAddCommentToComment(targetComment, payload);
+      try {
+        await HandleAddCommentToComment(targetComment, payload);
+      } catch (e) {
+        console.error("Error updating data:", e);
+      }
     }
   };
 
@@ -211,8 +246,12 @@ export default function CommentPage() {
   ) => {
     const targetComment = getChildCommentById(targetCommentId);
     if (targetComment) {
-      // await handleAddComment(targetComment, payload);
-      await HandleAddCommentToComment(targetComment, payload);
+      try {
+        await HandleAddCommentToComment(targetComment, payload);
+      } catch (e) {
+        console.error("Error updating data:", e);
+      }
+
       fetchComment();
     }
   };
@@ -222,11 +261,14 @@ export default function CommentPage() {
       targetComment.id === commentId ||
       comment?.parent_comment_ids.includes(targetComment.id);
 
-    await HandleDeleteComment(targetComment);
-    setCommentForDelete(null);
-
-    if (redirect) {
-      window.location.href = "/";
+    try {
+      await HandleDeleteComment(targetComment);
+      setCommentForDelete(null);
+      if (redirect) {
+        window.location.href = "/";
+      }
+    } catch (e) {
+      console.error("Error updating data:", e);
     }
   };
 
@@ -234,9 +276,14 @@ export default function CommentPage() {
     commentId: string,
     payload: AddCommentPayload
   ) => {
-    await HandleEditComment(commentId, payload);
-    setTargetEditComment(null);
-    setEditCommentModalOpen(false);
+    try {
+      await HandleEditComment(commentId, payload);
+      setTargetEditComment(null);
+      setEditCommentModalOpen(false);
+    } catch (e) {
+      console.error("Error updating data:", e);
+    }
+
     fetchComment();
   };
 

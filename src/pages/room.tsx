@@ -47,68 +47,92 @@ export default function RoomPage(): ReactElement<any> {
   }, []);
 
   const fetchRoom = async () => {
-    const roomRef = ref(database, "rooms/" + roomId);
-    await get(roomRef).then(async (snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        const convertedRoom = await ConvertRoom(roomId, data);
+    try {
+      const roomRef = ref(database, "rooms/" + roomId);
+      await get(roomRef).then(async (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const convertedRoom = await ConvertRoom(roomId, data);
 
-        const commentsInRoom = await Promise.all(
-          (convertedRoom.comments || []).map(async (comment) => {
-            return await GetCommentWitChildren(comment.id);
-          })
-        );
-        const filteredCommentsInRoom = commentsInRoom.filter((c) => c != null);
-        convertedRoom.comments = filteredCommentsInRoom as Comment[];
+          const commentsInRoom = await Promise.all(
+            (convertedRoom.comments || []).map(async (comment) => {
+              return await GetCommentWitChildren(comment.id);
+            })
+          );
+          const filteredCommentsInRoom = commentsInRoom.filter(
+            (c) => c != null
+          );
+          convertedRoom.comments = filteredCommentsInRoom as Comment[];
 
-        setRoom(convertedRoom);
-      }
-    });
+          setRoom(convertedRoom);
+        }
+      });
+    } catch (e) {
+      console.error(e);
+      setRoom(null);
+    }
   };
 
   const fetchAndWatchRoom = async () => {
     const dataRef = ref(database, "rooms/" + roomId);
     onValue(dataRef, async (snapshot: any) => {
-      const dbValue = snapshot.val();
-      if (!dbValue) {
-        return;
+      try {
+        const dbValue = snapshot.val();
+        if (!dbValue) {
+          return;
+        }
+        const convertedRoom = await ConvertRoom(roomId, dbValue);
+        let commentsInRoom: (Comment | null)[] = [];
+        try {
+          commentsInRoom = await Promise.all(
+            (convertedRoom.comments || []).map(async (comment) => {
+              return await GetCommentWitChildren(comment.id);
+            })
+          );
+        } catch (e) {
+          console.error(e);
+        }
+        const filteredCommentsInRoom = commentsInRoom.filter((c) => c != null);
+        convertedRoom.comments = filteredCommentsInRoom as Comment[];
+
+        setRoom(convertedRoom);
+      } catch (e) {
+        console.error(e);
+        setRoom(null);
       }
-      const convertedRoom = await ConvertRoom(roomId, dbValue);
-
-      const commentsInRoom = await Promise.all(
-        (convertedRoom.comments || []).map(async (comment) => {
-          return await GetCommentWitChildren(comment.id);
-        })
-      );
-      const filteredCommentsInRoom = commentsInRoom.filter((c) => c != null);
-      convertedRoom.comments = filteredCommentsInRoom as Comment[];
-
-      setRoom(convertedRoom);
     });
   };
 
   const handleLikeComment = (commentId: string) => {
-    const dbRef = ref(database);
-    const updates = {
-      [`comments/${commentId}/like_count`]: increment(1),
-    };
-    const timeNow = new Date().toISOString();
+    try {
+      const dbRef = ref(database);
+      const updates = {
+        [`comments/${commentId}/like_count`]: increment(1),
+      };
+      const timeNow = new Date().toISOString();
 
-    update(dbRef, updates);
+      update(dbRef, updates);
 
-    const roomRef = ref(database, "rooms/" + room?.id);
-    get(roomRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        set(ref(database, "rooms/" + room?.id + "/updated_at"), timeNow);
-      }
-    });
+      const roomRef = ref(database, "rooms/" + room?.id);
+      get(roomRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          set(ref(database, "rooms/" + room?.id + "/updated_at"), timeNow);
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleEditRoom = async (payload: AddRoomPayload) => {
     if (!room) {
       return;
     }
-    await HandleEditRoom(room.id, payload);
+    try {
+      await HandleEditRoom(room.id, payload);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleAddCommentInComment = async (
@@ -161,19 +185,27 @@ export default function RoomPage(): ReactElement<any> {
   };
 
   const handleDeleteRoom = async (room: Room) => {
-    await HandleDeleteRoom(room);
-    setRoomForDelete(null);
-    window.location.href = "/";
+    try {
+      await HandleDeleteRoom(room);
+      setRoomForDelete(null);
+      window.location.href = "/";
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleEditComment = async (
     commentId: string,
     payload: AddCommentPayload
   ) => {
-    await HandleEditComment(commentId, payload);
-    setIsEditCommentModalOpen(false);
-    setTargetCommentId("");
-    fetchRoom();
+    try {
+      await HandleEditComment(commentId, payload);
+      setIsEditCommentModalOpen(false);
+      setTargetCommentId("");
+      fetchRoom();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return room !== null ? (

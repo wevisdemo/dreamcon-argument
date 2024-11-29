@@ -21,10 +21,14 @@ export const ConvertRoom = async (id: string, data: any): Promise<Room> => {
       return com;
     })
   );
+
+  const fileredComments = comments.filter(
+    (comment) => comment !== null
+  ) as Comment[];
   return {
     id: id as string,
     title: data.title,
-    comments: comments,
+    comments: fileredComments,
     child_node_ids: data.child_node_ids || [],
     created_at: data.created_at,
     updated_at: data.updated_at,
@@ -92,17 +96,22 @@ export const ConvertCommentWithChildren = async (
   data: any
 ): Promise<Comment> => {
   if (data.comment_ids) {
-    const comments = Promise.all(
+    const comments: (Comment | null)[] = await Promise.all(
       data.comment_ids.map(async (commentId: string) => {
         return await getCommentWithoutChildren(commentId);
       })
     );
+
+    const filteredComments = comments.filter(
+      (comment) => comment !== null
+    ) as Comment[];
+
     return {
       id: id,
       comment_view: ConvertCommentView(data.comment_view),
       reason: data.reason,
       like_count: data.like_count,
-      comments: await comments,
+      comments: filteredComments,
       child_node_ids: data.child_node_ids || [],
       parent_comment_ids: data.parent_comment_ids || [],
       parent_room_id: data.parent_room_id,

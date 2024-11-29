@@ -6,10 +6,10 @@ import { HandleAddChildToRoom } from "./room";
 export const HandleDeleteComment = async (comment: Comment) => {
   const commentIds = [comment.id, ...comment.child_node_ids];
   await removeCommentFromRoom(comment.parent_room_id, comment);
-  await DeleteCommentByIds(commentIds);
   for (const parentId of comment.parent_comment_ids) {
     await removeCommentFromParentComment(parentId, comment);
   }
+  await DeleteCommentByIds(commentIds);
 };
 
 export const DeleteCommentByIds = async (commentIds: string[]) => {
